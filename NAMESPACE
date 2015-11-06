@@ -1,0 +1,9 @@
+export(lqr)
+importFrom(ghyp,Egig)
+importFrom(spatstat,ewcdf)
+importFrom(graphics, abline, axis, lines, par, plot,
+             points, polygon, title)
+importFrom(stats, dbeta, dnorm, optim, optimize, pgamma,
+             pnorm, ppoints, qexp, qnorm, qt, quantile,
+             rbeta, rexp, rgamma, rnorm, rt, runif,
+             smooth.spline)
