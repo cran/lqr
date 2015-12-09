@@ -27,7 +27,7 @@ lqr = function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 10^-6,envelop
     if(precision <= 0) stop("precision must be a positive value (suggested to be small)")
     #if(MaxIter <= 0 |MaxIter%%1!=0) stop("MaxIter must be a positive integer value")
     if(CI >= 1 | CI <= 0) stop("CI must be a real number in (0,1)")
-    if(is.logical(envelope) == FALSE) stop("show.convergence must be TRUE or FALSE.")
+    if(is.logical(envelope) == FALSE) stop("envelope must be TRUE or FALSE.")
     
     #Running the algorithm
     #out <- suppressWarnings(EM(y,x,p,dist,nu,gama,precision,envelope))

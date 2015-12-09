@@ -169,7 +169,7 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
     IEI = gradi[i,]%*%t(gradi[i,]) + IEI
   }
   
-  SE         = diag(solve(IEI))
+  SE         = sqrt(diag(solve(IEI)))
   table      = data.frame(beta,SE[1:d],beta/SE[1:d],2*pnorm(abs(beta/SE[1:d]),lower.tail = F))
   asteriscos = apply(X = table[4],MARGIN = 1,FUN = defast)
   table      = data.frame(round(table,5),asteriscos)
