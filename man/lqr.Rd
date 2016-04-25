@@ -38,11 +38,11 @@ It represents the degrees of freedom when \code{dist = t}. For the Slash distrib
 It represents a scale factor for the contaminated normal distribution. When is not provided, we use the MLE.
 }
   \item{precision}{
-The covergence maximum error permitted. By default is 10^-6.
+The convergence maximum error permitted. By default is 10^-6.
 }
   \item{envelope}{
-if \code{TRUE}, it will show a confidence envelope for a curve based on bootstrap replicates. 
-By default it is \code{TRUE} when just one quantile is provided. 
+if \code{TRUE}, it will show a confidence envelope for a curve based on bootstrap replicates.
+By default it is \code{TRUE} when just one quantile is provided.
 If a grid of quantiles is provided it will be \code{FALSE} by default.
 }
   \item{CI}{
@@ -66,9 +66,9 @@ When a grid of quantiles is provided, a graphical summary with point estimates a
 \item{BIC}{Bayesian information criterion.}
 \item{HQ}{Hannan-Quinn information criterion.}
 \item{fitted.values}{vector containing the fitted values.}
-\item{residuals}{vector containing the residuals.}                       
+\item{residuals}{vector containing the residuals.}
 }
-\author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, {Luis Benites} <\email{lsanchez@ime.usp.br}> and 
+\author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, {Luis Benites} <\email{lsanchez@ime.usp.br}> and
 Victor H. Lachos <\email{hlachos@ime.unicamp.br}>
 
 Maintainer: Christian E. Galarza <\email{cgalarza88@gmail.com}>
@@ -78,6 +78,8 @@ If a grid of quantiles is provided, the result will be a list of the same dimens
 }
 
 \examples{
+\dontrun{
+#Example 1
 ##Load the data
 data(ais)
 attach(ais)
@@ -104,6 +106,9 @@ modelL  = lqr(y,x,dist = "laplace")
 #Comparing AIC criterias
 modelN$AIC;modelT$AIC;modelL$AIC
 
+#This could be automatically done using best.lqr()
+best.model = best.lqr(y, x, p = 0.75, criterion = "AIC")
+
 #Let's use a grid of quantiles
 modelfull = lqr(y,x,p = seq(from = 0.10,to = 0.90,by = 0.05),dist = "normal")
 
@@ -116,6 +121,58 @@ abline(a = modelfull[[17]]$beta[1],b = modelfull[[17]]$beta[2],lwd=2,lty=1,col=2
 abline(a = modelfull[[4]]$beta[1],b = modelfull[[4]]$beta[2],lwd=2,lty=1,col=3)
 abline(a = modelfull[[14]]$beta[1],b = modelfull[[14]]$beta[2],lwd=2,lty=1,col=3)
 abline(a = modelfull[[9]]$beta[1],b = modelfull[[9]]$beta[2],lwd=2,lty=1,col=4)
+
+
+#Example 2
+##Load the data
+
+data(crabs,package = "MASS")
+
+crabs$sex <- as.character(crabs$sex)
+crabs$sex[crabs$sex=="M"]=0
+crabs$sex[crabs$sex=="F"]=1
+crabs$sex = as.numeric(crabs$sex)
+
+attach(crabs)
+head(crabs)
+
+##Setting
+y  <- BD
+x  <- cbind(1,FL,sex)
+plot(crabs)
+
+## Fitting a median regression with Normal errors (by default)
+modelF = lqr(y[sex==1], x[sex==1,1:2])
+modelM = lqr(y[sex==0], x[sex==0,1:2])
+plot(FL,BD,col=sex+1,xlab="Frontal lobe size",ylab="Body depth",main="Quantile Regression")
+abline(a = modelF$beta[1],b = modelF$beta[2],lwd=2,col=2)
+abline(a = modelM$beta[1],b = modelM$beta[2],lwd=2,col=4)
+
+#COMPARING SOME MODELS for median regression
+x<-cbind(1,FL)
+
+modelN  = lqr(y,x,dist = "normal")
+modelT  = lqr(y,x,dist = "t")
+modelL  = lqr(y,x,dist = "laplace")
+modelS  = lqr(y,x,dist = "slash")
+modelC  = lqr(y,x,dist = "cont" )
+
+#Comparing AIC criterias
+modelN$AIC;modelT$AIC;modelL$AIC;modelS$AIC;modelC$AIC
+
+#Let's use a grid of quantiles
+modelfull = lqr(y,x,p = seq(from = 0.10,to = 0.90,by = 0.05),dist = "t")
+
+#Plotting quantiles 0.10,0.25,0.50,0.75 and 0.90
+
+plot(FL,BD,xlab = "Frontal lobe size"
+     ,ylab = "Body depth", main = "Quantile Regression",pch=16)
+abline(a = modelfull[[1]]$beta[1],b = modelfull[[1]]$beta[2],lwd=2,lty=1,col=2)
+abline(a = modelfull[[17]]$beta[1],b = modelfull[[17]]$beta[2],lwd=2,lty=1,col=2)
+abline(a = modelfull[[4]]$beta[1],b = modelfull[[4]]$beta[2],lwd=2,lty=1,col=3)
+abline(a = modelfull[[14]]$beta[1],b = modelfull[[14]]$beta[2],lwd=2,lty=1,col=3)
+abline(a = modelfull[[9]]$beta[1],b = modelfull[[9]]$beta[2],lwd=2,lty=1,col=4)
+}
 }
 
 \references{
@@ -127,6 +184,7 @@ Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew
 \keyword{package}
 \keyword{quantile}
 \keyword{regression}
-\keyword{skewed}
-\seealso{\code{\link[qrLMM]{QRLMM}},
+\keyword{skew}
+
+\seealso{\code{\link{best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
 \code{\link[qrNLMM]{QRNLMM}}}

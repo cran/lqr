@@ -6,6 +6,8 @@ lqr = function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 10^-6,envelop
     ## Verify error at parameters specification
     envelope = TRUE
     
+    if(dist != "" && dist != "normal" && dist != "t" && dist != "laplace" && dist != "slash" && dist != "cont") stop("The dist values are normal, t, laplace, slash or cont.")
+    
     #No data
     if( (length(x) == 0) | (length(y) == 0)) stop("All parameters must be provided.")
     
@@ -110,7 +112,7 @@ lqr = function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 10^-6,envelop
     ## Verify error at parameters specification
     
     if(all(p > 0 && p < 1) == FALSE) stop("p vector must contain real values in (0,1)")
-    
+    if(dist != "" && dist != "normal" && dist != "t" && dist != "laplace" && dist != "slash" && dist != "cont") stop("The dist values are normal, t, laplace, slash or cont.")
     ## Verify error at parameters specification
     
     #No data

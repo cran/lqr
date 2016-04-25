@@ -1,9 +1,9 @@
-export(lqr)
+export(lqr,best.lqr,dtrunc,dSKD,ptrunc,pSKD,qtrunc,qSKD,rtrunc,rSKD,extrunc,vartrunc)
 importFrom(ghyp,Egig)
 importFrom(spatstat,ewcdf)
 importFrom(graphics, abline, axis, lines, par, plot,
-             points, polygon, title)
+             points, polygon, title, hist, plot.new)
 importFrom(stats, dbeta, dnorm, optim, optimize, pgamma,
              pnorm, ppoints, qexp, qnorm, qt, quantile,
              rbeta, rexp, rgamma, rnorm, rt, runif,
-             smooth.spline)
+             smooth.spline, residuals, integrate, uniroot)

@@ -34,6 +34,6 @@ Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew
 \keyword{quantile}
 \keyword{regression}
 \keyword{skewed}
-\seealso{\code{\link{lqr}}, \code{\link{ais}},
+\seealso{\code{\link{SKD}},\code{\link{lqr}}, \code{\link{ais}},
 \code{\link[qrLMM]{QRLMM}},
 \code{\link[qrNLMM]{QRNLMM}}}
