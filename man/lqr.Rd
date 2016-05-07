@@ -176,7 +176,8 @@ abline(a = modelfull[[9]]$beta[1],b = modelfull[[9]]$beta[2],lwd=2,lty=1,col=4)
 }
 
 \references{
-Koenker, R. (2005). Quantile regression (No. 38). Cambridge university press.
+Galarza, C.M., Lachos, V.H., Cabral, C.R.B. and Castro, L.M. (2016). Robust Quantile Regression using a Generalized Class of Skewed Distributions. Technical Report 7, Universidade Estadual de
+Campinas. \url{http://www.ime.unicamp.br/sites/default/files/rp07-16.pdf}
 
 Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew distributions and associated robust quantile regression models. Canadian Journal of Statistics, 42(4), 579-596.
 }

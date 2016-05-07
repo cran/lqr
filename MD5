@@ -1,4 +1,4 @@
-49304b4f1ac64c71c25e4bbbc2d156a3 *DESCRIPTION
+fd80dbd4b70a1166a0c5f8b3a5de1f11 *DESCRIPTION
 ccd958fe24c6ef93b11dd81900b7c132 *NAMESPACE
 46ae03257bcca4371a12cbc4c643dc39 *R/EM2.R
 f7c76835b966a06d640c7a707fdbd94b *R/EMonly.R
@@ -7,9 +7,9 @@ f7c76835b966a06d640c7a707fdbd94b *R/EMonly.R
 240a04ba83aa89f9476b096e97dd43f8 *R/bestlqr.R
 a5b8f31bfab70d42f493d02bbb85cbdd *R/pdqr.R
 ef4deeda8915b6924955783dc243dc63 *data/ais.txt.gz
-fe27f0a54e36823886a9ac52343d78f9 *man/SKD.Rd
+333303f8b200d9d6468327be5a632854 *man/SKD.Rd
 f4d57e302d376e309dccf7577a6e558b *man/ais.Rd
-55262872c7dffda3e06e5f5cb661b7fe *man/best.lqr.Rd
+fc748d7fe77285f0d4b5cda5e3f3f9ac *man/best.lqr.Rd
 ed89a4e6cdb207adc048889996cffb81 *man/dist.Truncated.Rd
-299de34b0c6989c79196cfc988d570a6 *man/lqr-package.Rd
-cfb0f90587d81be541554b73cef03393 *man/lqr.Rd
+2cde94e8d7e71ba76933cf217ee6e612 *man/lqr-package.Rd
+327096e94aeb0aba2bfa246b5a0f7d83 *man/lqr.Rd
