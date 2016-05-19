@@ -4,7 +4,6 @@ lqr = function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 10^-6,envelop
   if(length(p)==1)
   {
     ## Verify error at parameters specification
-    envelope = TRUE
     
     if(dist != "" && dist != "normal" && dist != "t" && dist != "laplace" && dist != "slash" && dist != "cont") stop("The dist values are normal, t, laplace, slash or cont.")
     
@@ -33,6 +32,12 @@ lqr = function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 10^-6,envelop
     
     #Running the algorithm
     #out <- suppressWarnings(EM(y,x,p,dist,nu,gama,precision,envelope))
+    cat('\n')
+    call <- match.call()
+    cat("Call:\n")
+    print(call)
+    cat('\n')
+    
     out <- EM(y,x,p,dist,nu,gama,precision,envelope)
     
     cat('\n')
@@ -137,9 +142,16 @@ lqr = function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 10^-6,envelop
     if(CI >= 1 | CI <= 0) stop("CI must be a real number in (0,1)")
     if(is.logical(envelope) == FALSE) stop("show.convergence must be TRUE or FALSE.")
     
+    cat('\n')
+    call <- match.call()
+    cat("Call:\n")
+    print(call)
+    cat('\n')
+    
     for(k in 1:length(p))
     {
       #Running the algorithm
+      
       out <- EM(y,x,p[k],dist,nu,gama,precision,envelope)
       
       cat('\n')
@@ -266,7 +278,6 @@ lqr = function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 10^-6,envelop
     }
     par(mfrow=c(1,1))
     title("Point estimative and 95% CI for model parameters", outer=TRUE)
-    
     class(obj.out)  =  "qr"
     return(obj.out)
   }

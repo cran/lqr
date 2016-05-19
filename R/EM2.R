@@ -311,8 +311,8 @@ EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,env
     a1<-ewcdf(gendistSLK(n=50000,dist = "slash",nu=nu))    #empricial *weighted* cdf and quantile function
     xq2 <- quantile(a1,ppoints(n))     #calls quantile.ecdf()
     
-    Xsim<-matrix(0,200,n)
-    for(i in 1:200){
+    Xsim<-matrix(0,500,n)
+    for(i in 1:500){
       Xsim[i,]<-gendistSLK(n = n,dist = "slash",nu=nu)
     }
     

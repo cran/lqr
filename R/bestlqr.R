@@ -27,11 +27,13 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
   vDIST = c("Normal","Student-t","Laplace","Slash","Cont. Normal")
   obj.out  = vector("list", 5)
   
-  #TEST
-  p = 0.5
-  precision = 10^-6
   #######################
   #oma margenes totales
+  cat('\n')
+  call <- match.call()
+  cat("Call:\n")
+  print(call)
+  cat('\n')
   
   par(mfrow=c(2,3),oma=c(0,1,1,0),mar=c(5, 4, 4, 2.5))
   for(k in 1:5)
@@ -39,6 +41,7 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
     obj.out[[k]] <- EM2(y = y,x = x,p = p,dist = vdist[k],precision = precision,envelope=TRUE)
   }
   plot.new()
+  par(mfrow=c(1,1))
   #mtext("Histogram of residuals and fitted densities", side = 3, line = 1, outer = TRUE,cex=1.3)
   
   
@@ -59,6 +62,7 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
     lines(seqq,dens,lwd=1.5,col="blue")
   }
   plot.new()
+  par(mfrow=c(1,1))
   #mtext("Histogram of residuals and fitted densities", side = 3, line = 1, outer = TRUE,cex=1.3)
   
   RES = matrix(data = NA,nrow = 4,ncol = 5)

@@ -187,5 +187,6 @@ Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew
 \keyword{regression}
 \keyword{skew}
 
-\seealso{\code{\link{best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
+\seealso{\code{\link{best.lqr}},\code{\link{Log.lqr}},
+\code{\link{Log.best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
 \code{\link[qrNLMM]{QRNLMM}}}

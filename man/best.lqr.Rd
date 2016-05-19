@@ -68,7 +68,7 @@ Maintainer: Christian E. Galarza <\email{cgalarza88@gmail.com}>
 \keyword{regression}
 \keyword{skew}
 
-\seealso{\code{\link{lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
+\seealso{\code{\link{lqr}},\code{\link{Log.lqr}},\code{\link{Log.best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
 \code{\link[qrNLMM]{QRNLMM}}}
 
 

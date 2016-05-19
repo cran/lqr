@@ -32,8 +32,13 @@ Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew
 
 \keyword{package}
 \keyword{quantile}
+\keyword{logistic}
+\keyword{bounded}
 \keyword{regression}
 \keyword{skewed}
-\seealso{\code{\link{SKD}},\code{\link{lqr}}, \code{\link{ais}},
+
+\seealso{\code{\link{SKD}},\code{\link{Log.best.lqr}},
+\code{\link{Log.lqr}},\code{\link{best.lqr}},\code{\link{lqr}},
+\code{\link{ais}},
 \code{\link[qrLMM]{QRLMM}},
 \code{\link[qrNLMM]{QRNLMM}}}
