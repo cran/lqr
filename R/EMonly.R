@@ -177,8 +177,8 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
   colnames(table) = c("Estimate","Std. Error","z value","Pr(>|z|)","")
 
    ########ENVELOPES: NORMAL
-  if(envelope==TRUE){
-  if(dist == "normal"){
+
+  if(envelope==TRUE && dist == "normal"){
     n <-length(y)
     tau=p
     muc<- (y-x%*%teta[1:d])
@@ -220,7 +220,7 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
 
   ######## ENVELOPES: T
 
-  if(dist == "t"){
+  if(envelope==TRUE && dist == "t"){
     muc<- (y-x%*%teta[1:d])
     Ind<- (muc<0)+0
     d2s<- (muc/(teta[d+1]))*(p-Ind)
@@ -259,7 +259,7 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
 
   ###### ENVELOPES: LAPLACE
 
-  if(dist == "laplace"){
+  if(envelope==TRUE && dist == "laplace"){
     n <-length(y)
     tau = p
     muc<- (y-x%*%teta[1:d])
@@ -300,7 +300,7 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
 
   ######## ENVELOPES: SLASH
 
-  if(dist == "slash"){
+  if(envelope==TRUE && dist == "slash"){
     muc<- (y-x%*%teta[1:d])
     Ind<- (muc<0)+0
     d2s<- (muc/(teta[d+1]))*(p-Ind)
@@ -342,7 +342,7 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
 
   ######## ENVELOPES: CONTAMINATED NORMAL
 
-  if(dist == "cont"){
+  if(envelope==TRUE && dist == "cont"){
     muc<- (y-x%*%teta[1:d])
     Ind<- (muc<0)+0
     d2s<- (muc/(teta[d+1]))*(p-Ind)
@@ -382,7 +382,6 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
     lines(xq2,d21,type="l",ylim=fy,xlab="",ylab="",lwd=0.5)
     lines(xq2,d2med,type="l",ylim=fy,xlab="",ylab="")
     lines(xq2,d22,type="l",ylim=fy,xlab="",ylab="",lwd=0.5)
-  }
   }
 
   #fitted and residuals values

@@ -83,13 +83,6 @@ defined using the score instead of a probability, \eqn{(y-a)/(b-y)}. When the co
 \item{fitted.values}{vector containing the fitted values.}
 \item{residuals}{vector containing the residuals.}
 }
-
-\references{
-Galarza, C.M., V. H. Lachos, Cabral, CRB. and Castro L.M. (2017) Robust Quantile Regression using a Generalized Class of Skewed Distributions. Stat. <doi: 10.1002/sta4.140>.
-
-Bottai, M., Cai, B. and McKeown, R. E. (2010), Logistic quantile regression for bounded outcomes. Statist. Med., 29: 309-317. <doi:10.1002/sim.3781>.
-}
-
 \author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, {Luis Benites} <\email{lsanchez@ime.usp.br}> and
 Victor H. Lachos <\email{hlachos@ime.unicamp.br}>
 
@@ -232,6 +225,13 @@ lines(seqq,ddB[,3],lwd=2,col=1)
 lines(seqq,ddB[,4],lwd=1,col=4)
 lines(seqq,ddB[,5],lwd=2,col=2)
 }
+}
+
+\references{
+Bottai, M., Cai, B., & McKeown, R. E. (2010). Logistic quantile regression for bounded outcomes. Statistics in Medicine, 29(2), 309-317.
+
+Galarza, C.M., Lachos, V.H., Cabral, C.R.B. and Castro, L.M. (2016). Robust Quantile Regression using a Generalized Class of Skewed Distributions. Technical Report 7, Universidade Estadual de
+Campinas. \url{http://www.ime.unicamp.br/sites/default/files/rp07-16.pdf}
 }
 
 \keyword{bounded}

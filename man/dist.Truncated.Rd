@@ -56,7 +56,8 @@ vartrunc(spec, a=-Inf, b=Inf, ...)
   \code{vartrunc} gives the variance of the truncated distribution.
 }
 \references{
-  Nadarajah, S. and Kotz, S. (2006). "R Programs for Computing Truncated Distributions". \emph{Journal of Statistical Software}, 16,
+  Nadarajah, S. and Kotz, S. (2006). "R Programs for Computing Truncated
+  Distributions". \emph{Journal of Statistical Software}, 16,
   Code Snippet 2, p. 1--8.
 }
 \seealso{

@@ -47,25 +47,19 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
   
   #HISTOGRAM AND FITTED DENSITIES
   
-  histM <-list()
   resall = unlist(lapply(X = obj.out,FUN = residuals))
   par(mfrow=c(2,3),oma=c(0,1,0,1),mar=c(5, 4, 5, 0.5))
   seqq = seq(from=min(resall),to = max(resall),length.out = 1000)
-  densM = matrix(NA,1000,5)
-  #folginha = 0.1
+  up = dSKD(y = 0,mu = 0,sigma = obj.out[[3]]$theta[dim(x)[2]+1],p = p,dist = vdist[3])
+  
+  folginha = 0.1
   for(k in 1:5)
   {
-    densM[,k] = dSKD(y = seqq,mu = 0,sigma = obj.out[[k]]$theta[dim(x)[2]+1],p = p,dist = vdist[k],
+    hist(x = obj.out[[k]]$residuals,freq=FALSE,breaks=sqrt(length(y)),xlab = "residuals",
+         main = vDIST[k],cex.main=1.5,ylim=c(0,(1+folginha)*up))
+    dens = dSKD(y = seqq,mu = 0,sigma = obj.out[[k]]$theta[dim(x)[2]+1],p = p,dist = vdist[k],
                 nu=obj.out[[k]]$nu,gama = obj.out[[k]]$gamma)
-    histM[[k]] = hist(x = obj.out[[k]]$residuals,breaks=sqrt(length(y)),plot = FALSE)
-  }
-  maxxx = max(densM,histM[[1]]$density,histM[[2]]$density,histM[[3]]$density,
-              histM[[4]]$density,histM[[5]]$density)
-  for(k in 1:5)
-  {
-    plot(histM[[k]],freq=FALSE,xlab = "residuals",xlim = range(resall,densM),
-         main = vDIST[k],cex.main=1.5,ylim=c(0,maxxx))
-    lines(seqq,densM[,k],lwd=1.5,col="blue")
+    lines(seqq,dens,lwd=1.5,col="blue")
   }
   plot.new()
   par(mfrow=c(1,1))

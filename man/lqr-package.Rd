@@ -25,9 +25,9 @@ Maintainer: Christian E. Galarza <\email{cgalarza88@gmail.com}>
 }
 
 \references{
-Galarza, C.M., V. H. Lachos, Cabral, CRB. and Castro L.M. (2017) Robust Quantile Regression using a Generalized Class of Skewed Distributions. Stat. <doi: 10.1002/sta4.140>.
+Galarza, C.M., Lachos, V.H., Cabral, C.R.B. and Castro, L.M. (2016). Robust Quantile Regression using a Generalized Class of Skewed Distributions. Technical Report 7, Universidade Estadual de Campinas. \url{http://www.ime.unicamp.br/sites/default/files/rp07-16.pdf}
 
-Bottai, M., Cai, B. and McKeown, R. E. (2010), Logistic quantile regression for bounded outcomes. Statist. Med., 29: 309-317. <doi:10.1002/sim.3781>.
+Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew distributions and associated robust quantile regression models. Canadian Journal of Statistics, 42(4), 579-596.
 }
 
 \keyword{package}
