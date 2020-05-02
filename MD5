@@ -1,4 +1,4 @@
-ebb502f13ebd6c99c0fde74c9222de15 *DESCRIPTION
+07ab3b141c8a3560e5cf4e95ce49f795 *DESCRIPTION
 483d07ec0195471a6844fc162eeb1ce1 *NAMESPACE
 6d3f5442b19ae2fcabaf73c1ed788fee *R/EM2.R
 d00f3f3e9daf96331a1c3a89167722b8 *R/EMonly.R
@@ -11,15 +11,15 @@ a0c1fb1c95f0e3f1f6618bb8be633f41 *R/FUNCTION.R
 f67c3ff7fc9f3328b15e7295a40757af *R/loglqr.R
 af30f298ad1dd561c18cf582904eb908 *R/lqr.print.R
 a5b8f31bfab70d42f493d02bbb85cbdd *R/pdqr.R
-ef4deeda8915b6924955783dc243dc63 *data/ais.txt.gz
-f1cb9ce4f178fdd6710d3f2c29472981 *data/resistance.txt.gz
+c183a522ab33acf9b7975cff39d4b4c1 *data/ais.txt
+d42da6ddb5c8446eee8d7530f5dde092 *data/resistance.txt
 9a3f59f1cc43e24f97ed7dfd6aaa593a *man/Egig.Rd
 333303f8b200d9d6468327be5a632854 *man/SKD.Rd
-273ae984c8f192908c00e86a13fac0ed *man/ais.Rd
+f4d57e302d376e309dccf7577a6e558b *man/ais.Rd
 49e8fbe95bdf2a70f0de902b7ae1fee4 *man/best.lqr.Rd
 ed89a4e6cdb207adc048889996cffb81 *man/dist.Truncated.Rd
 e443879cec73e37fc09878e4475c0bc7 *man/logbestlqr.Rd
 ad60989904bc7882162fe2e044c6ea70 *man/loglqr.Rd
 33efe298b6dfc392b5d3fb745c5df27e *man/lqr-package.Rd
 7ce3d37d40a27702381b8354c857b038 *man/lqr.Rd
-f4d57e302d376e309dccf7577a6e558b *man/resistence.Rd
+b34c0c79a529a204e5203f27a421c656 *man/resistence.Rd

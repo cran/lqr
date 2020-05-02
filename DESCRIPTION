@@ -1,8 +1,8 @@
 Package: lqr
 Type: Package
 Title: Robust Linear Quantile Regression
-Version: 2.0
-Date: 2020-01-03
+Version: 2.11
+Date: 2020-05-01
 Author: Christian E. Galarza, Luis Benites, Victor H. Lachos
 Maintainer: Christian E. Galarza <cgalarza88@gmail.com>
 Imports: graphics, stats, spatstat, numDeriv
@@ -16,6 +16,6 @@ Description: It fits a robust linear quantile regression model using a new
     when several quantiles are provided simultaneously.
 License: GPL (>= 2)
 NeedsCompilation: no
-Packaged: 2020-01-03 20:16:11 UTC; cgala
+Packaged: 2020-05-01 20:22:59 UTC; cgala
 Repository: CRAN
-Date/Publication: 2020-01-09 16:30:06 UTC
+Date/Publication: 2020-05-02 22:10:02 UTC
