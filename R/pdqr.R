@@ -54,8 +54,14 @@ pSKD = function(q,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail=TR
   if(gama=="" && dist == "cont"){gama=0.1}
   
   #if(dist == "normal"){out = integrate(f = densN,lower = -Inf,upper = x,mu = mu,sigma = sigma,p = p)$value}
-  if(dist == "normal"){out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densN,lower = -Inf,mu = mu,sigma = sigma,p = p))[1,])}
-  if(dist == "t"){out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densT,lower = -Inf,mu = mu,sigma = sigma,p = p,nu=nu))[1,])}
+  if(dist == "normal"){
+    #out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densN,lower = -Inf,mu = mu,sigma = sigma,p = p))[1,])
+    vecpSKT(b = q,mu = mu,sigma = sigma,nu = 10^6,p = p)
+    }
+  if(dist == "t"){
+    #out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densT,lower = -Inf,mu = mu,sigma = sigma,p = p,nu=nu))[1,])
+    vecpSKT(b = q,mu = mu,sigma = sigma,nu = nu,p = p)
+    }
   if(dist == "laplace"){out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densL,lower = -Inf,mu = mu,sigma = sigma,p = p))[1,])}
   if(dist == "slash"){out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densSl,lower = -Inf,mu = mu,sigma = sigma,p = p,nu=nu))[1,])}
   if(dist == "cont"){out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densNC,lower = -Inf,mu = mu,sigma = sigma,p = p,nu=nu,gama=gama))[1,])}
@@ -140,3 +146,4 @@ rSKD = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
 
 
 #package.skeleton(list = c("dSKD","pSKD","qSKD","rSKD"), name = "mypkg2")
+

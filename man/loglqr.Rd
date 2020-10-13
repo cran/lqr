@@ -5,7 +5,7 @@
 Robust Logistic Linear Quantile Regression
 }
 \description{
-It performs the logistic transformation in Bottai et.al. (2009) (see references) for estimating quantiles for a bounded response. Once the response is transformed, it uses the \code{lqr} function.
+It performs the logistic transformation in Galarza et.al.(2020) (see references) for estimating quantiles for a bounded response. Once the response is transformed, it uses the \code{lqr} function.
 }
 \usage{
 Log.lqr(y,x,p=0.5,a=0,b=1,dist = "normal",nu="",gama="",precision = 10^-6,
@@ -228,10 +228,10 @@ lines(seqq,ddB[,5],lwd=2,col=2)
 }
 
 \references{
-Bottai, M., Cai, B., & McKeown, R. E. (2010). Logistic quantile regression for bounded outcomes. Statistics in Medicine, 29(2), 309-317.
+Galarza, C.M., Zhang P. and Lachos, V.H. (2020). Logistic Quantile Regression for Bounded Outcomes Using
+a Family of Heavy-Tailed Distributions. Sankhya B: The Indian Journal of Statistics. \url{https://doi.org/10.1007/s13571-020-00231-0}
 
-Galarza, C.M., Lachos, V.H., Cabral, C.R.B. and Castro, L.M. (2016). Robust Quantile Regression using a Generalized Class of Skewed Distributions. Technical Report 7, Universidade Estadual de
-Campinas. \url{http://www.ime.unicamp.br/sites/default/files/rp07-16.pdf}
+Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust quantile regression using a generalized class of skewed distributions. Stat, 6(1), 113-130.
 }
 
 \keyword{bounded}

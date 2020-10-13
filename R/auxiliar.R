@@ -196,7 +196,7 @@ vartrunc <- function(spec, a=-Inf, b=Inf, ...)
   f <- function(x) {
     {x - ex}^2 * dtrunc(x, spec, a=a, b=b, log=FALSE, ...)}
   sigma2 <- integrate(f, lower=a, upper=b)$value
-  return(sigma2)
+  return(list(mean = ex, Ey2 = sigma2 + ex^2,var = sigma2))
 }
 
 

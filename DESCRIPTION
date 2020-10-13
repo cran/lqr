@@ -1,21 +1,21 @@
 Package: lqr
 Type: Package
 Title: Robust Linear Quantile Regression
-Version: 2.11
-Date: 2020-05-01
-Author: Christian E. Galarza, Luis Benites, Victor H. Lachos
+Version: 3.31
+Date: 2020-10-12
+Author: Christian E. Galarza, Luis Benites, Marcelo Bourguignon, Victor H. Lachos
 Maintainer: Christian E. Galarza <cgalarza88@gmail.com>
-Imports: graphics, stats, spatstat, numDeriv
+Imports: graphics, stats, spatstat, numDeriv, MomTrunc, quantreg
 Suggests: ald, qrLMM, qrNLMM
 Description: It fits a robust linear quantile regression model using a new
-    family of zero-quantile distributions for the error term. This family of
+    family of zero-quantile distributions for the error term. Missing values and censored observations can be handled as well. This family of
     distribution includes skewed versions of the Normal, Student's t, Laplace, Slash
     and Contaminated Normal distribution. It also performs logistic quantile regression for bounded responses
-    as shown in Bottai et.al.(2009) <doi:10.1002/sim.3781>. It provides estimates and full inference.
+    as shown in Galarza et.al.(2020) <doi:10.1007/s13571-020-00231-0>. It provides estimates and full inference.
     It also provides envelopes plots for assessing the fit and confidences bands
     when several quantiles are provided simultaneously.
 License: GPL (>= 2)
 NeedsCompilation: no
-Packaged: 2020-05-01 20:22:59 UTC; cgala
+Packaged: 2020-10-13 04:37:18 UTC; cgala
 Repository: CRAN
-Date/Publication: 2020-05-02 22:10:02 UTC
+Date/Publication: 2020-10-13 08:50:02 UTC
