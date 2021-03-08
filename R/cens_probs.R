@@ -105,8 +105,8 @@ pSKT = function(a,b,mu,sigma,nu,p){
 # pSKT(-1,2,0,1,4,0.1)
 # expSKT(-1,2,0,1,4,0.1)
 
-meanSKT(-1,2,0,1,4,0.1)
-
+# meanSKT(-1,2,0,1,4,0.1)
+# 
 vecpSKT = Vectorize(pSKT)
 vecexpSKT = Vectorize(expSKT)
 vecmeanSKT = Vectorize(meanSKT)

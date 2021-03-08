@@ -229,7 +229,7 @@ lines(seqq,ddB[,5],lwd=2,col=2)
 
 \references{
 Galarza, C.M., Zhang P. and Lachos, V.H. (2020). Logistic Quantile Regression for Bounded Outcomes Using
-a Family of Heavy-Tailed Distributions. Sankhya B: The Indian Journal of Statistics. \url{https://doi.org/10.1007/s13571-020-00231-0}
+a Family of Heavy-Tailed Distributions. Sankhya B: The Indian Journal of Statistics. \doi{10.1007/s13571-020-00231-0}
 
 Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust quantile regression using a generalized class of skewed distributions. Stat, 6(1), 113-130.
 }
