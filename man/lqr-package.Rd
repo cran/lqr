@@ -6,7 +6,7 @@
 Robust Linear Quantile Regression
 }
 \description{
-It fits a robust linear quantile regression model using a new family of zero-quantile distributions for the error term. This family of distribution includes skewed versions of the Normal, Student's t, Laplace, Slash and Contaminated Normal distribution. It provides estimates and full inference. It also provides envelopes plots for assessing the fit and confidences bands when several quantiles are provided simultaneously.
+It fits a robust linear quantile regression model using a new family of zero-quantile distributions for the error term. This family of distribution includes skewed versions of the Normal, Student's t, Laplace, Slash and Contaminated Normal distribution. It provides estimates and full inference. It also provides envelopes plots for assessing the fit and confidences bands when several quantiles are provided simultaneously. Details of its first version can be found below.
 }
 \details{
 \tabular{ll}{
@@ -16,7 +16,8 @@ Version: \tab 1.0\cr
 Date: \tab 2015-10-29\cr
 License: \tab GPL (>=2)\cr
 }
-~~ An overview of how to use the package, including the most important functions ~~
+
+
 }
 \author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, {Luis Benites} <\email{lsanchez@ime.usp.br}> and 
 Victor H. Lachos <\email{hlachos@ime.unicamp.br}>
@@ -25,10 +26,12 @@ Maintainer: Christian E. Galarza <\email{cgalarza88@gmail.com}>
 }
 
 \references{
+Galarza, C., Lachos, V. H. & Bourguignon M. (2021). A skew-t quantile regression for censored and missing data. Stat.<doi:10.1002/sta4.379>.
+
+Galarza C.E., Lachos V.H. & Panpan Z. (2020) Logistic quantile regression for bounded outcomes using a family of heavy-tailed distributions. Sankhya B. <doi:10.1007/s13571-020-00231-0>.
+
 Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust quantile regression using a generalized class of skewed distributions. Stat,
 6(1), 113-130.
-
-Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew distributions and associated robust quantile regression models. Canadian Journal of Statistics, 42(4), 579-596.
 }
 
 \keyword{package}

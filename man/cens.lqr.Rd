@@ -107,12 +107,10 @@ out = cens.lqr(y,x,cc,LL,UL,p=0.25,nu = 10,precision = 1e-6,envelope = TRUE)
 }
 
 \references{
-Galarza, C., Lachos V.H. and Bourguignon M. (2020). A skew-t quantile regression for censored and missing data. STAT (under review).
+Galarza, C., Lachos, V. H. & Bourguignon M. (2021). A skew-t quantile regression for censored and missing data. Stat.\doi{10.1002/sta4.379}.
 
 Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust quantile regression using a generalized class of skewed distributions. Stat,
 6(1), 113-130.
-
-Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew distributions and associated robust quantile regression models. Canadian Journal of Statistics, 42(4), 579-596.
 }
 
 \keyword{package}

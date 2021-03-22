@@ -1,5 +1,5 @@
 export(cens.lqr,Log.lqr,Log.best.lqr,lqr,best.lqr,dtrunc,dSKD,ptrunc,pSKD,qtrunc,qSKD,rtrunc,rSKD,extrunc,vartrunc,Egig)
-importFrom(spatstat,ewcdf)
+importFrom(spatstat.geom,ewcdf)
 importFrom(numDeriv,grad)
 importFrom(graphics, abline, axis, lines, par, plot,
              points, polygon, title, hist, plot.new)
