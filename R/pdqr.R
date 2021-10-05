@@ -57,16 +57,54 @@ pSKD = function(q,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail=TR
   if(dist == "normal"){
     #out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densN,lower = -Inf,mu = mu,sigma = sigma,p = p))[1,])
     out = vecpSKT(a = -Inf,b = q,mu = mu,sigma = sigma,nu = 10^6,p = p)
-    }
+  }
   if(dist == "t"){
     #out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densT,lower = -Inf,mu = mu,sigma = sigma,p = p,nu=nu))[1,])
     out = vecpSKT(a = -Inf,b = q,mu = mu,sigma = sigma,nu = nu,p = p)
-    }
-  if(dist == "laplace"){out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densL,lower = -Inf,mu = mu,sigma = sigma,p = p))[1,])}
-  if(dist == "slash"){out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densSl,lower = -Inf,mu = mu,sigma = sigma,p = p,nu=nu))[1,])}
-  if(dist == "cont"){out = as.double(as.matrix(sapply(X = q,FUN = integrate,f = densNC,lower = -Inf,mu = mu,sigma = sigma,p = p,nu=nu,gama=gama))[1,])}
+  }
+  if(dist == "laplace"){
+    out = as.double(as.matrix(sapply(X = q,
+                                     FUN = integrate,
+                                     f = densL,
+                                     lower = -Inf,
+                                     mu = mu,
+                                     sigma = sigma,
+                                     p = p))[1,])
+    out[out < 0] = 0
+    out[out > 1] = 1
+  }
+  
+  if(dist == "slash"){
+    out = as.double(as.matrix(sapply(X = q,
+                                     FUN = integrate,
+                                     f = densSl,
+                                     lower = -Inf,
+                                     mu = mu,
+                                     sigma = sigma,
+                                     p = p,
+                                     nu=nu))[1,])
+    out[out < 0] = 0
+    out[out > 1] = 1
+  }
+  
+  if(dist == "cont"){
+    out = as.double(as.matrix(sapply(X = q,
+                                     FUN = integrate,
+                                     f = densNC,
+                                     lower = -Inf,
+                                     mu = mu,
+                                     sigma = sigma,
+                                     p = p,
+                                     nu=nu,
+                                     gama=gama))[1,])
+    out[out < 0] = 0
+    out[out > 1] = 1
+  }
+  
   ifelse(test=lower.tail == TRUE,yes=return(out),no=return(1-out))
 }
+
+# ae = .Machine$double.eps^0.25
 
 # seqq = seq(from=-20,to = 10,length.out = 1000)
 # vals = pSKD(x=seqq,mu=0,sigma=1,p=0.75,dist="t")

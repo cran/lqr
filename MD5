@@ -1,4 +1,4 @@
-8deebb415f0eb5c1156035a97f30ae66 *DESCRIPTION
+3781b802de42f39b1a9caf05f72db5ef *DESCRIPTION
 4fb2ecade2bfe7366f966ec21a360fbf *NAMESPACE
 6d3f5442b19ae2fcabaf73c1ed788fee *R/EM2.R
 d00f3f3e9daf96331a1c3a89167722b8 *R/EMonly.R
@@ -12,8 +12,8 @@ a0c1fb1c95f0e3f1f6618bb8be633f41 *R/FUNCTION.R
 5ae4f1be798b85a2d5aafa666df9a08e *R/logbestlqr.R
 f67c3ff7fc9f3328b15e7295a40757af *R/loglqr.R
 af30f298ad1dd561c18cf582904eb908 *R/lqr.print.R
-d541c75dd712e7e272141dcb586a2e7a *R/pdqr.R
-7fbd746165b797b6afab313b5997473a *build/partial.rdb
+043f5c01117dc0affa934dd37c1dbffc *R/pdqr.R
+526c85308bbc5b49d2499bd859114c65 *build/partial.rdb
 c183a522ab33acf9b7975cff39d4b4c1 *data/ais.txt
 d42da6ddb5c8446eee8d7530f5dde092 *data/resistance.txt
 9a3f59f1cc43e24f97ed7dfd6aaa593a *man/Egig.Rd
