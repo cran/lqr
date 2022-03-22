@@ -145,7 +145,7 @@ cens.lqr <- function(y,x,cc,LL,UL,p=0.5,nu = NULL,precision = 1e-6,envelope=FALS
     den = t(x)%*%Omega%*%x
     num = t(x)%*%Omega%*%ypred
     beta = solve(den)%*%(num)
-    sigma2 = 4/n*sum(diag((Omega%*%(diag(ypred2) - (2*ypred - x%*%beta)%*%t(x%*%beta)))))
+    sigma2 = 4/n*sum(diag((Omega%*%(diag(as.numeric(ypred2)) - (2*ypred - x%*%beta)%*%t(x%*%beta)))))
     
     param <- teta
     teta <- c(beta,sqrt(sigma2))
@@ -262,7 +262,7 @@ cens.lqr <- function(y,x,cc,LL,UL,p=0.5,nu = NULL,precision = 1e-6,envelope=FALS
   
   #Individual score (by i)
   derbetai  = (4/sigma2)*diag(c(EU*pvec*(ypred - x%*%beta)))%*%x
-  dersigmai = - 1/sigma + c(4/sigma^3)*diag(Omega%*%(diag(ypred2) - (2*ypred - x%*%beta)%*%t(x%*%beta)))
+  dersigmai = - 1/sigma + c(4/sigma^3)*diag(Omega%*%(diag(as.numeric(ypred2)) - (2*ypred - x%*%beta)%*%t(x%*%beta)))
   
   gradi     = cbind(derbetai,dersigmai)
   
