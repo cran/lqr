@@ -1,16 +1,42 @@
+get_xy = function(formula0,data0,subset0 = "")
+{
+  subset0 = with(data = data0,expr = eval(parse(text=subset0)))
+  
+  if(missing(data0) | is.null(data0)){
+    
+    s = model.frame(formula = formula(formula0))
+    y = model.response(s)
+    x = model.matrix(s)
+  }else{
+    
+    if(!is.null(subset0)){
+      data0 = base::subset(x = data0,subset = subset0)
+    }
+    s = model.frame(formula = formula(formula0),
+                    data = data0)
+    y = model.response(s)
+    x = model.matrix(s,data0)
+  }
+  return(list(x = x,y = y))
+}
+
+
+#get_xy(formula0 = mpg~hp,data0 = mtcars,subset0 = (mpg < 10))
+
+
 # require(ghyp)
 # require(LaplacesDemon)
 # require(spatstat)
 
 # GENERATE FROM SKD
 
-genSLK = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
+genSLK = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gamma="")
 {
   if(dist == ""){dist = "normal"}
   if(nu=="" && dist == "t"){nu=4}
   if(nu=="" && dist == "slash"){nu=2}
   if(nu=="" && dist == "cont"){nu=0.1}
-  if(gama=="" && dist == "cont"){gama=0.1}
+  if(gamma=="" && dist == "cont"){gamma=0.1}
   
   rhn = abs(rnorm(n,mean = 0,sd = 1))
   
@@ -18,7 +44,7 @@ genSLK = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
   if(dist == "t"){K = rinvgamma(n,shape = nu/2,scale = nu/2)}
   if(dist == "laplace"){K = rexp(n,rate = 1/2)}
   if(dist == "slash"){K = 1/rbeta(n,nu,1)}
-  if(dist == "cont"){K = 1/sample(x = c(gama,1),size = n,replace = T,prob = c(nu,1-nu))}
+  if(dist == "cont"){K = 1/sample(x = c(gamma,1),size = n,replace = T,prob = c(nu,1-nu))}
   
   I = ifelse(runif(n)<p,-(1/(2*(1-p))),1/(2*p))
   y = I*rhn
@@ -26,19 +52,19 @@ genSLK = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
 }
 
 # GENERATE FROM SKD DISTANCE
-gendistSLK = function(n,dist = "normal",nu="",gama="")
+gendistSLK = function(n,dist = "normal",nu="",gamma="")
 {
 if(dist == ""){dist = "normal"}
 if(nu=="" && dist == "t"){nu=4}
 if(nu=="" && dist == "slash"){nu=2}
 if(nu=="" && dist == "cont"){nu=0.1}
-if(gama=="" && dist == "cont"){gama=0.1}
+if(gamma=="" && dist == "cont"){gamma=0.1}
 
 if(dist == "normal"){K = 1}
 if(dist == "t"){K = rinvgamma(n,shape = nu/2,scale = nu/2)}
 if(dist == "laplace"){K = rexp(n,rate = 1/2)}
 if(dist == "slash"){K = 1/rbeta(n,nu,1)}
-if(dist == "cont"){K = 1/sample(x = c(gama,1),size = n,replace = T,prob = c(nu,1-nu))}
+if(dist == "cont"){K = 1/sample(x = c(gamma,1),size = n,replace = T,prob = c(nu,1-nu))}
 
 return(0.5*sqrt(K)*abs(rnorm(n,mean = 0,sd = 1)))
 }
@@ -107,10 +133,10 @@ loglikSl = function(x,mu,sigma,nu,p)
   )))
 }
 
-loglikNC = function(x,mu,sigma,nu,gama,p)
+loglikNC = function(x,mu,sigma,nu,gamma,p)
 {
   return(sum(log(
-    densNC(x,mu,sigma,nu,gama,p)
+    densNC(x,mu,sigma,nu,gamma,p)
   )))
 }
 
@@ -205,13 +231,13 @@ vartrunc <- function(spec, a=-Inf, b=Inf, ...)
 ###########################################################################
 
 
-genSLK = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
+genSLK = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gamma="")
 {
   if(dist == ""){dist = "normal"}
   if(nu=="" && dist == "t"){nu=4}
   if(nu=="" && dist == "slash"){nu=2}
   if(nu=="" && dist == "cont"){nu=0.1}
-  if(gama=="" && dist == "cont"){gama=0.1}
+  if(gamma=="" && dist == "cont"){gamma=0.1}
   
   rhn = abs(rnorm(n,mean = 0,sd = 1))
   
@@ -219,7 +245,7 @@ genSLK = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
   if(dist == "t"){K = rinvgamma(n,shape = nu/2,scale = nu/2)}
   if(dist == "laplace"){K = rexp(n,rate = 1/2)}
   if(dist == "slash"){K = 1/rbeta(n,nu,1)}
-  if(dist == "cont"){K = 1/sample(x = c(gama,1),size = n,replace = T,prob = c(nu,1-nu))}
+  if(dist == "cont"){K = 1/sample(x = c(gamma,1),size = n,replace = T,prob = c(nu,1-nu))}
   
   I = ifelse(runif(n)<p,-(1/(2*(1-p))),1/(2*p))
   y = I*rhn
@@ -260,9 +286,9 @@ densSl = function(x,mu,sigma,nu,p)
   return(gu*fu/qu)
 }
 
-densNC = function(x,mu=0,sigma=1,nu=0.1,gama=0.1,p=0.5)
+densNC = function(x,mu=0,sigma=1,nu=0.1,gamma=0.1,p=0.5)
 {
-  return(nu*densN(x,mu,sigma/sqrt(gama),p) + (1-nu)*densN(x,mu,sigma,p))
+  return(nu*densN(x,mu,sigma/sqrt(gamma),p) + (1-nu)*densN(x,mu,sigma,p))
 }
 
 inverse <- function (f, lower=-Inf, upper=Inf,...) {

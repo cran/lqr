@@ -8,8 +8,15 @@ Robust Logistic Linear Quantile Regression
 It performs the logistic transformation in Galarza et.al.(2020) (see references) for estimating quantiles for a bounded response. Once the response is transformed, it uses the \code{lqr} function.
 }
 \usage{
-Log.lqr(y,x,p=0.5,a=0,b=1,dist = "normal",nu="",gama="",precision = 10^-6,
-epsilon = 0.001,CI=0.95)
+Log.lqr(formula,data = NULL,subset = NULL,
+                   p=0.5,a=0,b=1,
+                   dist = "normal",
+                   nu=NULL,
+                   gamma=NULL,
+                   precision = 10^-6,
+                   epsilon = 0.001,
+                   CI=0.95,
+                   silent = FALSE)
 }
 
 \arguments{
@@ -22,14 +29,18 @@ lower bound for the response (default = 0)
 upper bound for the response (default = 1)
 }
 \item{epsilon}{
-a small quantity \eqn{\epsilon>0} that ensures that the logistic transform is defined for all values of \code{y}
+a small quantity \eqn{\epsilon>0} that ensures that the logistic transform is defined for all values of the response.
 }
-\item{y}{
-the response vector of dimension \eqn{n} where \eqn{n} is the total of observations.
+\item{formula}{
+an object of class "formula" (or one that can be coerced to that class): a symbolic description of the model to be fitted.
 }
-\item{x}{
-design matrix for the fixed effects of dimension \eqn{N x d} where \eqn{d} represents the number of fixed effects including the intercept, if considered.
-}\item{p}{
+\item{data}{
+an optional data frame, list or environment (or object coercible by \code{as.data.frame} to a data frame) containing the variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}.
+}
+\item{subset}{
+an optional string specifying a subset of observations to be used in the fitting process. Be aware of the use of double quotes in a proper way when necessary, e.g., in \code{"(sex=='F')"}.
+}  
+\item{p}{
 An unique quantile or a set of quantiles related to the quantile regression.
 }
   \item{dist}{
@@ -38,7 +49,7 @@ represents the distribution to be used for the error term. The values are \code{
 \item{nu}{
 It represents the degrees of freedom when \code{dist = t}. For the Slash distribution (\code{dist = slash}) it is a shape parameter \eqn{\nu>0}. For the Contaminated Normal distribution, \eqn{\nu} is the parameter that represents the percentage of outliers. When is not provided, we use the MLE.
 }
-  \item{gama}{
+  \item{gamma}{
 It represents a scale factor for the contaminated normal distribution. When is not provided, we use the MLE.
 }
   \item{precision}{
@@ -46,6 +57,9 @@ The convergence maximum error permitted. By default is 10^-6.
 }
   \item{CI}{
 Confidence to be used for the Confidence Interval when a grid of quantiles is provided. Default = 0.95.
+}
+\item{silent}{
+if \code{FALSE} (by default), the function prints some output.
 }
 }
 \details{
@@ -59,11 +73,9 @@ that implies
 
 where \eqn{Q_{y}(p)} represents the conditional quantile of the response. Once estimates for the regression coefficients \eqn{\beta_p} are obtained, inference on \eqn{Q_{y}(p)} can then be made through the inverse transform above. This equation (as function) is provided in the output. See example.
 
-The interpretation of the regression coefficients is analogous to the interpretation of the coefficients of a logistic regression
-for binary outcomes.
+The interpretation of the regression coefficients is analogous to the interpretation of the coefficients of a logistic regression for binary outcomes.
 
-For example, let \eqn{x_1} be the gender (male = 0, female=1). Then \eqn{exp(\beta_{0.5,1})} represents the odds ratio of median score in males vs females, where the odds are
-defined using the score instead of a probability, \eqn{(y-a)/(b-y)}. When the covariate is continous, the respective \eqn{\beta} coeficient can be interpretated as the increment (or decrement) over the log(odd ratio) when the covariate increases one unit.
+For example, let \eqn{x_1} be the gender (male = 0, female=1). Then \eqn{exp(\beta_{0.5,1})} represents the odds ratio of median score in males vs females, where the odds are defined using the score instead of a probability, \eqn{(y-a)/(b-y)}. When the covariate is continous, the respective \eqn{\beta} coeficient can be interpretated as the increment (or decrement) over the log(odd ratio) when the covariate increases one unit.
 
 
 }
@@ -93,7 +105,8 @@ When a grid of quantiles is provided, a graphical summary with point estimates a
 }
 
 \examples{
-\dontrun{
+\donttest{
+
 ##Load the data
 data(resistance)
 attach(resistance)
@@ -106,7 +119,7 @@ attach(resistance)
 boxplot(score~type,ylab="score",xlab="type")
 
 #Student't median logistic quantile regression
-res = Log.lqr(y = score,x = cbind(1,type),a=0,b=4,dist="t")
+res = Log.lqr(score~type,data = resistance,a=0,b=4,dist="t")
 
 # The odds ratio of median score in type B vs type A
 exp(res$beta[2])
@@ -132,98 +145,97 @@ dosecat<-cut(dose, 6, ordered = TRUE)
 boxplot(score~dosecat,ylim=c(0,4))
 abline(h=c(0,4),lty=2)
 
-#Slash (Non logistic) quantile regression for quantiles 0.05, 0.50 and 0.95
-xx1  = dose
-xx2  = dose^2
-xx3  = dose^3
-res3 = lqr(y = score,x = cbind(1,xx1,xx2,xx3),p = c(0.05,0.50,0.95),dist="slash")
-seqq=seq(min(dose),max(dose),length.out = 1000)
-dd = matrix(data = NA,nrow = 1000,ncol =3)
-for(i in 1:3)
-{
-  dd[,i] = rep(res3[[i]]$beta[1],1000) + res3[[i]]$beta[2]*seqq +
-    res3[[i]]$beta[3]*seqq^2 + res3[[i]]$beta[4]*seqq^3
-}
+#(Non logistic) Best quantile regression for quantiles
+# 0.05, 0.50 and 0.95
+p05 = best.lqr(score~poly(dose,3),data = resistance,p = 0.05)
+p50 = best.lqr(score~poly(dose,3),data = resistance,p = 0.50)
+p95 = best.lqr(score~poly(dose,3),data = resistance,p = 0.95)
+res3  = list(p05,p50,p95)
 
 plot(dose,score,ylim=c(-1,5),col="gray");abline(h=c(0,4),lty=2)
-lines(seqq,dd[,1],lwd=1,col=2)
-lines(seqq,dd[,2],lwd=1,col=1)
-lines(seqq,dd[,3],lwd=1,col=2)
+lines(sort(dose), p05$fitted.values[order(dose)], col='red', type='l')
+lines(sort(dose), p50$fitted.values[order(dose)], col='blue', type='l')
+lines(sort(dose), p95$fitted.values[order(dose)], col='red', type='l')
 
-#Using logistic quantile regression for obtaining predictions inside bounds
+#Using Student's t logistic quantile regression for obtaining preditypeBions inside bounds
 
-res4 = Log.lqr(y = score,x = cbind(1,xx1,xx2,xx3),a = 0,b = 4,p = c(0.05,0.50,0.95),dist="slash")
-dd = matrix(data = NA,nrow = 1000,ncol =3)
-for(i in 1:3)
-{
-  dd[,i] = rep(res4[[i]]$beta[1],1000) + res4[[i]]$beta[2]*seqq +
-    res4[[i]]$beta[3]*seqq^2 + res4[[i]]$beta[4]*seqq^3
-}
+logp05 = Log.lqr(score~poly(dose,3),data = resistance,p = 0.05,b = 4,dist = "t") #a = 0 by default
+logp50 = Log.lqr(score~poly(dose,3),data = resistance,p = 0.50,b = 4,dist = "t")
+logp95 = Log.lqr(score~poly(dose,3),data = resistance,p = 0.95,b = 4,dist = "t")
+res4  = list(logp05,logp50,logp95)
 
-#Computing quantiles for the original response (Inverse trnasformation)
-
-pred = function(predlog,a,b)
-{
-  return((b*exp(predlog)+a)/(1+exp(predlog)))
-}
-
-for(i in 1:3)
-{
-  dd[,i] = pred(dd[,i],a=0,b=4)
-}           
-
-#No more prediction curves outof bounds
-plot(dose,score,ylim=c(0,4),col="gray");abline(h=c(0,4),lty=2)
-lines(seqq,dd[,1],lwd=1,col=2)
-lines(seqq,dd[,2],lwd=1,col=1)
-lines(seqq,dd[,3],lwd=1,col=2)
+#No more predited curves out-of-bounds
+plot(dose,score,ylim=c(-1,5),col="gray");abline(h=c(0,4),lty=2)
+lines(sort(dose), logp05$fitted.values[order(dose)], col='red', type='l')
+lines(sort(dose), logp50$fitted.values[order(dose)], col='blue', type='l')
+lines(sort(dose), logp95$fitted.values[order(dose)], col='red', type='l')
 
 #EXAMPLE 1.3
 ############
 
 #A full model using dose and type for a grid of quantiles
 
-typeB = 1*(type=="B")
-res5 = Log.lqr(y = score,x = cbind(1,xx1,xx2,xx3,typeB,typeB*xx1),a = 0,b = 4,
-               p = seq(from = 0.05,to = 0.95,by = 0.05),dist = "t")
-ddA = ddB = matrix(data = NA,nrow = 1000,ncol = 5)
-for(i in 1:5)
-{
-  k = c(2,5,10,15,18)[i]
-  ddA[,i] = rep(res5[[k]]$beta[1],1000) + res5[[k]]$beta[2]*seqq + res5[[k]]$beta[3]*
-    seqq^2 + res5[[k]]$beta[4]*seqq^3
-  ddB[,i] = rep(res5[[k]]$beta[1],1000) + (res5[[k]]$beta[2] + res5[[k]]$beta[6])*
-    seqq + res5[[k]]$beta[3]*seqq^2 + res5[[k]]$beta[4]*seqq^3  + res5[[k]]$beta[5]
+res5 = Log.lqr(formula = score ~ poly(dose,3)*type,data = resistance,
+               a = 0,b = 4,
+               p = seq(from = 0.05,to = 0.95,by = 0.05),dist = "t",
+               silent = TRUE)
+
+#A nice plot
+
+if(TRUE){
+  par(mfrow=c(1,2))
+  typeB = (resistance$type == "B")
+  
+  plot(dose,score,
+       ylim=c(0,4),
+       col=c(8*typeB + 1*!typeB),main="Type A")
+  abline(h=c(0,4),lty=2)
+  
+  lines(sort(dose[!typeB]),
+        res5[[2]]$fitted.values[!typeB][order(dose[!typeB])],
+        col='red')
+  
+  lines(sort(dose[!typeB]),
+        res5[[5]]$fitted.values[!typeB][order(dose[!typeB])],
+        col='green')
+  
+  lines(sort(dose[!typeB]),
+        res5[[10]]$fitted.values[!typeB][order(dose[!typeB])],
+        col='blue',lwd=2)
+  
+  lines(sort(dose[!typeB]),
+        res5[[15]]$fitted.values[!typeB][order(dose[!typeB])],
+        col='green')
+  
+  lines(sort(dose[!typeB]),
+        res5[[18]]$fitted.values[!typeB][order(dose[!typeB])],
+        col='red')
+  
+  plot(dose,score,
+       ylim=c(0,4),
+       col=c(1*typeB + 8*!typeB),main="Type B")
+  abline(h=c(0,4),lty=2)
+  
+  lines(sort(dose[typeB]),
+        res5[[2]]$fitted.values[typeB][order(dose[typeB])],
+        col='red')
+  
+  lines(sort(dose[typeB]),
+        res5[[5]]$fitted.values[typeB][order(dose[typeB])],
+        col='green')
+  
+  lines(sort(dose[typeB]),
+        res5[[10]]$fitted.values[typeB][order(dose[typeB])],
+        col='blue',lwd=2)
+  
+  lines(sort(dose[typeB]),
+        res5[[15]]$fitted.values[typeB][order(dose[typeB])],
+        col='green')
+  
+  lines(sort(dose[typeB]),
+        res5[[18]]$fitted.values[typeB][order(dose[typeB])],
+        col='red')
 }
-
-#Computing quantiles for the original response (Inverse transformation)
-
-for(i in 1:5)
-{
-  ddA[,i] = pred(ddA[,i],a=0,b=4)
-  ddB[,i] = pred(ddB[,i],a=0,b=4)
-} 
-
-#Such a beautiful plot
-par(mfrow=c(1,2))
-plot(dose,score,ylim=c(0,4),col=c((type == "B")*8+(type == "A")*1),main="Type A")
-abline(h=c(0,4),lty=2)
-lines(seqq,ddA[,1],lwd=2,col=2)
-lines(seqq,ddA[,2],lwd=1,col=4)
-lines(seqq,ddA[,3],lwd=2,col=1)
-lines(seqq,ddA[,4],lwd=1,col=4)
-lines(seqq,ddA[,5],lwd=2,col=2)
-
-legend(x = 0,y=4,legend = c("p=0.10","p=0.25","p=0.50","p=0.75","p=0.90")
-       ,col=c(2,4,1,4,2),lwd=c(2,1,2,1,2),bty = "n",cex=0.65)
-
-plot(dose,score,ylim=c(0,4),col=c((type == "B")*1 + (type == "A")*8),
-     main="Type B");abline(h=c(0,4),lty=2)
-lines(seqq,ddB[,1],lwd=2,col=2)
-lines(seqq,ddB[,2],lwd=1,col=4)
-lines(seqq,ddB[,3],lwd=2,col=1)
-lines(seqq,ddB[,4],lwd=1,col=4)
-lines(seqq,ddB[,5],lwd=2,col=2)
 }
 }
 
@@ -240,5 +252,6 @@ Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust qua
 \keyword{regression}
 \keyword{skew}
 
-\seealso{\code{\link{Log.best.lqr}},\code{\link{best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
-\code{\link[qrNLMM]{QRNLMM}}}
+\seealso{\code{\link{Log.best.lqr}},\code{\link{best.lqr}},\code{\link{dSKD}}%,\code{\link[qrLMM]{QRLMM}},
+%\code{\link[qrNLMM]{QRNLMM}}
+}

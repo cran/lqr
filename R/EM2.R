@@ -2,7 +2,7 @@
 #EM ALGORITHM
 ########################################################################
 
-EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,envelope=FALSE){
+EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gamma="",precision = 0.000001,envelope=FALSE){
   
   n <- length(y)
   d = dim(x)[2]
@@ -12,12 +12,12 @@ EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,env
   beta.old <- beta
   sigma2.old <- sigma2
   nu.old = nu
-  gama.old = gama
+  gamma.old = gamma
   if(dist == ""){dist = "normal"}
   if(nu.old=="" && dist == "t"){nu=4}
   if(nu.old=="" && dist == "slash"){nu=2}
   if(nu.old=="" && dist == "cont"){nu=0.1}
-  if(gama.old=="" && dist == "cont"){gama=0.1}
+  if(gamma.old=="" && dist == "cont"){gamma=0.1}
   E = rep(1,n)
   pvec = rep(1,n)
   criterio <- 1
@@ -64,14 +64,14 @@ EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,env
       var1  = sigma2/(4*(1-p)^2)
       var2  = sigma2/(4*(p)^2)
       
-      a    = nu*p*dnorm(x = y[y-x%*%beta<=0],mean = mean1,sd = sqrt(var1/gama))
+      a    = nu*p*dnorm(x = y[y-x%*%beta<=0],mean = mean1,sd = sqrt(var1/gamma))
       b    = (1-nu)*p*dnorm(x = y[y-x%*%beta<=0],mean = mean1,sd = sqrt(var1))
       
-      c    = nu*(1-p)*dnorm(x = y[y-x%*%beta>0],mean = mean2,sd = sqrt(var2/gama))
+      c    = nu*(1-p)*dnorm(x = y[y-x%*%beta>0],mean = mean2,sd = sqrt(var2/gamma))
       d    = (1-nu)*(1-p)*dnorm(x = y[y-x%*%beta>0],mean = mean2,sd = sqrt(var2))
       
-      E[y-x%*%beta<=0] = ((gama*a)+b)/(a+b)
-      E[y-x%*%beta>0]  = ((gama*c)+d)/(c+d)
+      E[y-x%*%beta<=0] = ((gamma*a)+b)/(a+b)
+      E[y-x%*%beta>0]  = ((gamma*c)+d)/(c+d)
     }
     
     ### M-step: atualizar mu, sigma2 ###
@@ -98,25 +98,25 @@ EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,env
       nu     = optnu$maximum
     }
     
-    if(nu.old!="" && gama.old =="" && dist == "cont"){
+    if(nu.old!="" && gamma.old =="" && dist == "cont"){
       optgamma  = optimize(f = loglikNC,interval = c(0,1),maximum = T,x=y,mu=x%*%beta,sigma = sqrt(sigma2),nu=nu,p=p)
       loglik = optgamma$objective
-      gama  = optgamma$maximum
+      gamma  = optgamma$maximum
     }
     
-    if(nu.old=="" && gama.old !="" && dist == "cont"){
-      optnu  = optimize(f = loglikNC,interval = c(0,1),maximum = T,x=y,mu=x%*%beta,sigma = sqrt(sigma2),gama=0.1,p=p)
+    if(nu.old=="" && gamma.old !="" && dist == "cont"){
+      optnu  = optimize(f = loglikNC,interval = c(0,1),maximum = T,x=y,mu=x%*%beta,sigma = sqrt(sigma2),gamma=0.1,p=p)
       loglik = optnu$objective
       nu     = optnu$maximum
     }
     
-    if(nu.old=="" && gama.old=="" && dist == "cont"){
-      opt  = optim(par = c(nu,gama),fn = AUXloglikNC,control = list(fnscale = -1),method = "L-BFGS-B",
+    if(nu.old=="" && gamma.old=="" && dist == "cont"){
+      opt  = optim(par = c(nu,gamma),fn = AUXloglikNC,control = list(fnscale = -1),method = "L-BFGS-B",
                    lower = c(0.001,0.001),upper = c(0.999,0.999),x=y,mu=x%*%beta,
                    sigma = sqrt(sigma2),p=p)
       loglik = opt$value
       nu     = opt$par[1]
-      gama  = opt$par[2]
+      gamma  = opt$par[2]
     }
     
     param <- teta
@@ -143,7 +143,7 @@ EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,env
   }
   
   if(nu.old!="" && dist == "cont"){
-    loglik =loglikNC(y,x%*%teta[1:d],sigma = teta[d+1],nu=nu,gama = gama,p=p)
+    loglik =loglikNC(y,x%*%teta[1:d],sigma = teta[d+1],nu=nu,gamma = gamma,p=p)
   }
   
   npar = length(c(teta))
@@ -172,8 +172,8 @@ EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,env
   SE         = sqrt(diag(solve(IEI)))
   table      = data.frame(beta,SE[1:d],beta/SE[1:d],2*pnorm(abs(beta/SE[1:d]),lower.tail = F))
   asteriscos = apply(X = table[4],MARGIN = 1,FUN = defast)
-  table      = data.frame(round(table,5),asteriscos)
-  rownames(table) = paste("beta",1:d)
+  table      = data.frame(table,asteriscos)
+  rownames(table) = colnames(x)
   colnames(table) = c("Estimate","Std. Error","z value","Pr(>|z|)","")
   
   ########ENVELOPES: NORMAL                       
@@ -351,13 +351,13 @@ EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,env
     #COMPUTE QUANTILES
     #require(spatstat)
     sec = seq(from = 0,to = 6,length.out = 100000)
-    dd = densdist(di = sec,dens = densNC,nu=nu,gama=gama)
+    dd = densdist(di = sec,dens = densNC,nu=nu,gamma=gamma)
     a1<-ewcdf(x = sec,weights = dd/sum(dd))
     xq2 <- quantile(a1,ppoints(n))     #calls quantile.ecdf()
     
     Xsim<-matrix(0,200,n)
     for(i in 1:200){
-      Xsim[i,]<-gendistSLK(n = n,dist = "cont",nu=nu,gama=gama)
+      Xsim[i,]<-gendistSLK(n = n,dist = "cont",nu=nu,gamma=gamma)
     }
     
     Xsim2<-apply(Xsim,1,sort)
@@ -398,6 +398,6 @@ EM2 <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,env
   }
   
   if(dist == "cont"){
-    return(list(iter =count,criterio = criterio,theta = teta, nu=nu,gamma = gama,table = table,SE = SE,loglik = loglik,AIC=AIC,BIC=BIC,HQ=HQ,fitted.values = fitted.values,residuals=residuals))
+    return(list(iter =count,criterio = criterio,theta = teta, nu=nu,gamma = gamma,table = table,SE = SE,loglik = loglik,AIC=AIC,BIC=BIC,HQ=HQ,fitted.values = fitted.values,residuals=residuals))
   }
 }

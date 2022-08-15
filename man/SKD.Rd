@@ -11,12 +11,12 @@
 }
 
 \usage{
-dSKD(y, mu = 0, sigma = 1, p = 0.5, dist = "normal", nu = "", gama = "")
-pSKD(q, mu = 0, sigma = 1, p = 0.5, dist = "normal", nu = "", gama = "",
+dSKD(y, mu = 0, sigma = 1, p = 0.5, dist = "normal", nu = "", gamma = "")
+pSKD(q, mu = 0, sigma = 1, p = 0.5, dist = "normal", nu = "", gamma = "",
 lower.tail = TRUE)
-qSKD(prob, mu = 0, sigma = 1, p = 0.5, dist = "normal", nu = "", gama = "",
+qSKD(prob, mu = 0, sigma = 1, p = 0.5, dist = "normal", nu = "", gamma = "",
 lower.tail = TRUE)
-rSKD(n, mu = 0, sigma = 1, p = 0.5, dist = "normal", nu = "", gama = "")
+rSKD(n, mu = 0, sigma = 1, p = 0.5, dist = "normal", nu = "", gamma = "")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -44,7 +44,7 @@ represents the distribution to be used for the error term. The values are \code{
 \item{nu}{
 It represents the degrees of freedom when \code{dist = t}. For the Slash distribution (\code{dist = slash}) it is a shape parameter \eqn{\nu>0}. For the Contaminated Normal distribution, \eqn{\nu} is the parameter that represents the percentage of outliers. When is not provided, we use the MLE.
 }
-  \item{gama}{
+  \item{gamma}{
 It represents a scale factor for the contaminated normal distribution. When is not provided, we use the MLE.
 }
   \item{lower.tail}{
@@ -88,7 +88,7 @@ The numerical arguments other than \code{n} are recycled to the length of the re
 }
 
 \examples{
-\dontrun{
+\donttest{
 ## Let's plot (Normal Vs. Student-t's with 4 df)
 ##Density
 sseq = seq(15,65,length.out = 1000)
@@ -104,7 +104,7 @@ abline(h=1,lty=2)
 
 ##Inverse Distribution Function
 prob = seq(0.001,0.999,length.out = 1000)
-idf = qSKD(prob=prob,mu=50,sigma=3,p=0.25,dist="cont",nu=0.3,gama=0.1) # 1 min appox
+idf = qSKD(prob=prob,mu=50,sigma=3,p=0.25,dist="cont",nu=0.3,gamma=0.1) # 1 min appox
 plot(prob,idf,type="l",lwd=2,col="gray30",xlab="x",ylab=expression(F^{-1}~(x)))
 title(main="Skew Cont. Normal Inverse Distribution function")
 abline(v=c(0,1),lty=2)

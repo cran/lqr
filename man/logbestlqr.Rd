@@ -8,12 +8,14 @@ Best Fit in Robust Logistic Linear Quantile Regression
 It performs the logistic transformation in Galarza et.al.(2020) (see references) for estimating quantiles for a bounded response. Once the response is transformed, it uses the \code{best.lqr} function.
 }
 \usage{
-Log.best.lqr(y,x,p=0.5,a=0,b=1,epsilon = 0.001,
-precision = 10^-6,criterion = "AIC")
+Log.best.lqr(formula,data = NULL,subset = NULL,
+                        p=0.5,a=0,b=1,
+                        epsilon = 0.001,precision = 10^-6,
+                        criterion = "AIC")
 }
 
 \arguments{
-We will detail first the only three arguments that differ from \code{lqr} function.
+We will detail first the only three arguments that differ from \code{best.lqr} function.
 
   \item{a}{
 lower bound for the response (default = 0)
@@ -22,14 +24,18 @@ lower bound for the response (default = 0)
 upper bound for the response (default = 1)
 }
 \item{epsilon}{
-a small quantity \eqn{\epsilon>0} that ensures that the logistic transform is defined for all values of \code{y}
+a small quantity \eqn{\epsilon>0} that ensures that the logistic transform is defined for all values of the response.
 }
-\item{y}{
-the response vector of dimension \eqn{n} where \eqn{n} is the total of observations.
+\item{formula}{
+an object of class "formula" (or one that can be coerced to that class): a symbolic description of the model to be fitted.
 }
-\item{x}{
-design matrix for the fixed effects of dimension \eqn{N x d} where \eqn{d} represents the number of fixed effects including the intercept, if considered.
-}\item{p}{
+\item{data}{
+an optional data frame, list or environment (or object coercible by \code{as.data.frame} to a data frame) containing the variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}.
+}
+\item{subset}{
+an optional string specifying a subset of observations to be used in the fitting process. Be aware of the use of double quotes in a proper way when necessary, e.g., in \code{"(sex=='F')"}.
+}  
+\item{p}{
 An unique quantile or a set of quantiles related to the quantile regression.
 }
   \item{precision}{
@@ -87,7 +93,8 @@ When a grid of quantiles is provided, a graphical summary with point estimates a
 }
 
 \examples{
-\dontrun{
+\donttest{
+
 ##Load the data
 data(resistance)
 attach(resistance)
@@ -100,7 +107,7 @@ attach(resistance)
 boxplot(score~type)
 
 #Median logistic quantile regression (Best fit distribution)
-res = Log.best.lqr(y = score,x = cbind(1,type),a=0,b=4)
+res = Log.best.lqr(formula = score~type,data = resistance,a=0,b=4)
 
 # The odds ratio of median score in type B vs type A
 exp(res$beta[2])
@@ -112,7 +119,7 @@ rateA = (medA - 0)/(4 - medA)
 rateB = (medB - 0)/(4 - medB)
 odd   = rateB/rateA
 
-round(c(exp(res$beta[2]),odd),3) #better fitted
+round(c(exp(res$beta[2]),odd),3) #best fit
 
 #EXAMPLE 1.2
 ############
@@ -127,56 +134,28 @@ abline(h=c(0,4),lty=2)
 
 #(Non logistic) Best quantile regression for quantiles
 # 0.05, 0.50 and 0.95
-xx1  = dose
-xx2  = dose^2
-xx3  = dose^3
-res31 = best.lqr(y = score,x = cbind(1,xx1,xx2,xx3),p = 0.05)
-res32 = best.lqr(y = score,x = cbind(1,xx1,xx2,xx3),p = 0.50)
-res33 = best.lqr(y = score,x = cbind(1,xx1,xx2,xx3),p = 0.95)
-res3  = list(res31,res32,res33)
-seqq=seq(min(dose),max(dose),length.out = 1000)
-dd = matrix(data = NA,nrow = 1000,ncol =3)
-for(i in 1:3)
-{
-  dd[,i] = rep(res3[[i]]$beta[1],1000) + res3[[i]]$beta[2]*seqq +
-    res3[[i]]$beta[3]*seqq^2 + res3[[i]]$beta[4]*seqq^3
-}
+p05 = best.lqr(score~poly(dose,3),data = resistance,p = 0.05)
+p50 = best.lqr(score~poly(dose,3),data = resistance,p = 0.50)
+p95 = best.lqr(score~poly(dose,3),data = resistance,p = 0.95)
+res3  = list(p05,p50,p95)
 
 plot(dose,score,ylim=c(-1,5),col="gray");abline(h=c(0,4),lty=2)
-lines(seqq,dd[,1],lwd=1,col=2)
-lines(seqq,dd[,2],lwd=1,col=1)
-lines(seqq,dd[,3],lwd=1,col=2)
+lines(sort(dose), p05$fitted.values[order(dose)], col='red', type='l')
+lines(sort(dose), p50$fitted.values[order(dose)], col='blue', type='l')
+lines(sort(dose), p95$fitted.values[order(dose)], col='red', type='l')
 
 #Using logistic quantile regression for obtaining predictions inside bounds
 
-res41 = Log.best.lqr(y = score,x = cbind(1,xx1,xx2,xx3),a=0,b=4,p = 0.05)
-res42 = Log.best.lqr(y = score,x = cbind(1,xx1,xx2,xx3),a=0,b=4,p = 0.50)
-res43 = Log.best.lqr(y = score,x = cbind(1,xx1,xx2,xx3),a=0,b=4,p = 0.95)
-res4  = list(res41,res42,res43)
-dd = matrix(data = NA,nrow = 1000,ncol =3)
-for(i in 1:3)
-{
-  dd[,i] = rep(res4[[i]]$beta[1],1000) + res4[[i]]$beta[2]*seqq +
-    res4[[i]]$beta[3]*seqq^2 + res4[[i]]$beta[4]*seqq^3
-}
+logp05 = Log.best.lqr(score~poly(dose,3),data = resistance,p = 0.05,b = 4) #a = 0 by default
+logp50 = Log.best.lqr(score~poly(dose,3),data = resistance,p = 0.50,b = 4)
+logp95 = Log.best.lqr(score~poly(dose,3),data = resistance,p = 0.95,b = 4)
+res4  = list(logp05,logp50,logp95)
 
-#Computing quantiles for the original response (Inverse trnasformation)
-
-pred = function(predlog,a,b)
-{
-  return((b*exp(predlog)+a)/(1+exp(predlog)))
-}
-
-for(i in 1:3)
-{
-  dd[,i] = pred(dd[,i],a=0,b=4)
-}           
-
-#No more prediction curves outof bounds
-plot(dose,score,ylim=c(0,4),col="gray");abline(h=c(0,4),lty=2)
-lines(seqq,dd[,1],lwd=1,col=2)
-lines(seqq,dd[,2],lwd=1,col=1)
-lines(seqq,dd[,3],lwd=1,col=2)
+#No more prediction curves out-of-bounds
+plot(dose,score,ylim=c(-1,5),col="gray");abline(h=c(0,4),lty=2)
+lines(sort(dose), logp05$fitted.values[order(dose)], col='red', type='l')
+lines(sort(dose), logp50$fitted.values[order(dose)], col='blue', type='l')
+lines(sort(dose), logp95$fitted.values[order(dose)], col='red', type='l')
 
 }
 }
@@ -194,5 +173,6 @@ Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust qua
 \keyword{regression}
 \keyword{skew}
 
-\seealso{\code{\link{Log.lqr}},\code{\link{best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
-\code{\link[qrNLMM]{QRNLMM}}}
+\seealso{\code{\link{Log.lqr}},\code{\link{best.lqr}},\code{\link{dSKD}}%,\code{\link[qrLMM]{QRLMM}},
+%\code{\link[qrNLMM]{QRNLMM}}
+}

@@ -6,6 +6,9 @@ importFrom(graphics, abline, axis, lines, par, plot,
 importFrom(stats, dbeta, dnorm, optim, optimize, pgamma,
              pnorm, ppoints, qexp, qnorm, qt, quantile,
              rbeta, rexp, rgamma, rnorm, rt, runif,
-             smooth.spline, residuals, integrate, uniroot,median)
+             smooth.spline, residuals, integrate,
+             uniroot,median,formula)
 importFrom(MomTrunc,pmvnormt,onlymeanTMD,meanvarTMD)
 importFrom(quantreg,rq)
+import(MASS)
+importFrom("stats", "model.frame", "model.matrix", "model.response")

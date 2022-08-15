@@ -1,5 +1,14 @@
-best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
+best.lqr = function(formula,data = NULL,
+                    subset = NULL,
+                    p=0.5,precision = 10^-6,criterion = "AIC")
 {
+  if(is.null(subset)){subset = ""}
+  xy = get_xy(formula0 = formula,
+              data0 = data,
+              subset0 = subset)
+  x = xy$x
+  y = xy$y
+  
   if(length(p)>1) stop("The function best.lqr is only available for one quantile.")
   ## Verify error at parameters specification
   envelope = TRUE
@@ -21,7 +30,7 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
   if(criterion != "" && criterion != "AIC" && criterion != "BIC" && criterion != "HQ" && criterion != "loglik") stop("The criterion must be AIC, BIC, HQ or loglik.")
   
   #Running the algorithm
-  #out <- suppressWarnings(EM(y,x,p,dist,nu,gama,precision,envelope))
+  #out <- suppressWarnings(EM(y,x,p,dist,nu,gamma,precision,envelope))
   
   vdist = c("normal","t","laplace","slash","cont")
   vDIST = c("Normal","Student-t","Laplace","Slash","Cont. Normal")
@@ -58,7 +67,7 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
     hist(x = obj.out[[k]]$residuals,freq=FALSE,breaks=sqrt(length(y)),xlab = "residuals",
          main = vDIST[k],cex.main=1.5,ylim=c(0,(1+folginha)*up))
     dens = dSKD(y = seqq,mu = 0,sigma = obj.out[[k]]$theta[dim(x)[2]+1],p = p,dist = vdist[k],
-                nu=obj.out[[k]]$nu,gama = obj.out[[k]]$gamma)
+                nu=obj.out[[k]]$nu,gamma = obj.out[[k]]$gamma)
     lines(seqq,dens,lwd=1.5,col="blue")
   }
   plot.new()
@@ -96,30 +105,22 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
   out  = obj.out[[index]]
   dist = vdist[index] 
   cat('\n')
-  cat('--------------------------------------------------------------\n')
-  cat('        Quantile Linear Regression using SKD family\n')
-  cat('--------------------------------------------------------------\n')
+  cat("Criterion:",criterion,'\n')
+  cat("Best fit:",vDIST[index],'\n')
+  cat("Quantile:",p,'\n')
   cat('\n')
-  cat("Criterion =",criterion,'\n')
-  cat("Best fit =",vDIST[index],'\n')
-  cat("Quantile =",p,'\n')
-  cat('\n')
-  cat('--------------------------------\n')
-  cat('Model Likelihood-Based criterion\n')
-  cat('--------------------------------\n')
+  cat('Model Likelihood-Based criteria:\n')
   cat('\n')
   print(RES)
   #cat("Iterations =",out$iter)
   cat('\n')
-  cat('---------\n')
-  cat('Estimates\n')
-  cat('---------\n')
+  cat('Estimates:\n')
   cat('\n')
   print(out$table)
   cat('---\n')
   cat('Signif. codes:  0 "***" 0.001 "**" 0.01 "*" 0.05 "." 0.1 " " 1\n')
   cat('\n')
-  cat('sigma =',round(out$theta[ncol(as.matrix(x))+1],5),'\n')
+  cat('sigma =',out$theta[ncol(as.matrix(x))+1],'\n')
   if(dist == "normal" || dist == "laplace"){
     cat('\n')
   }
@@ -161,7 +162,7 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
                    fitted.values = out$fitted.values,residuals=out$residuals)
   }
   class(obj.out)  =  "qr"
-  return(obj.out)  
+  invisible(obj.out)  
   
   # else
   # {
@@ -170,7 +171,7 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
   #   
   #   ## Verify error at parameters specification
   #   
-  #   if(all(p > 0 && p < 1) == FALSE) stop("p vector must contain real values in (0,1)")
+  #   if(all(p > 0 & p < 1) == FALSE) stop("p vector must contain real values in (0,1)")
   #   
   #   ## Verify error at parameters specification
   #   
@@ -186,7 +187,7 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
   #   if( length(y) != nrow(as.matrix(x)) ) stop("x variable does not have the same number of lines than y")
   #   
   #   #Validating supports
-  #   if(gama != "" && (gama >= 1 | gama <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
+  #   if(gamma != "" && (gamma >= 1 | gamma <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   #   if(nu != "" && (nu >= 1 | nu <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   #   if(nu != "" && (nu >= 100 | nu < 2) && dist == "t") stop("nu must be a positive real number at least 2.")
   #   if(nu != "" && nu <= 0 && dist == "slash") stop("nu must be a positive real number.")
@@ -199,7 +200,7 @@ best.lqr = function(y,x,p=0.5,precision = 10^-6,criterion = "AIC")
   #   for(k in 1:length(p))
   #   {
   #     #Running the algorithm
-  #     out <- EM(y,x,p[k],dist,nu,gama,precision,envelope)
+  #     out <- EM(y,x,p[k],dist,nu,gamma,precision,envelope)
   #     
   #     cat('\n')
   #     cat('--------------------------------------------------------------\n')

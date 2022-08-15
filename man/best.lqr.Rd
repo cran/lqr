@@ -8,16 +8,22 @@ Best Fit in Robust Linear Quantile Regression
 It finds the best fit distribution in robust linear quantile regression model. It adjusts the Normal, Student's t, Laplace, Slash and Contaminated Normal models. It shows a summary table with the likelihood-based criterion, envelopes plots and the histogram of the residuals with fitted densities for all models. Estimates and full inference are provided for the best model.
 }
 \usage{
-best.lqr(y, x, p = 0.5, precision = 10^-6, criterion = "AIC")
+best.lqr(formula,data = NULL,subset = NULL,
+              p = 0.5, precision = 10^-6,
+              criterion = "AIC")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{y}{
-the response vector of dimension \eqn{n} where \eqn{n} is the total of observations.
+\item{formula}{
+an object of class "formula" (or one that can be coerced to that class): a symbolic description of the model to be fitted.
 }
-\item{x}{
-design matrix for the fixed effects of dimension \eqn{N x d} where \eqn{d} represents the number of fixed effects including the intercept, if considered.
-}\item{p}{
+\item{data}{
+an optional data frame, list or environment (or object coercible by \code{as.data.frame} to a data frame) containing the variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}.
+}
+\item{subset}{
+an optional string specifying a subset of observations to be used in the fitting process. Be aware of the use of double quotes in a proper way when necessary, e.g., in \code{"(sex=='F')"}.
+}  
+\item{p}{
 An unique quantile or a set of quantiles related to the quantile regression.
 }
   \item{precision}{
@@ -68,26 +74,17 @@ Maintainer: Christian E. Galarza <\email{cgalarza88@gmail.com}>
 \keyword{regression}
 \keyword{skew}
 
-\seealso{\code{\link{lqr}},\code{\link{Log.lqr}},\code{\link{Log.best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
-\code{\link[qrNLMM]{QRNLMM}}}
+\seealso{\code{\link{lqr}},\code{\link{Log.lqr}},\code{\link{Log.best.lqr}},\code{\link{dSKD}}%,\code{\link[qrLMM]{QRLMM}},
+%\code{\link[qrNLMM]{QRNLMM}}
+}
 
 
 \examples{
-\dontrun{
+\donttest{
+
 data(crabs,package = "MASS")
 
-crabs$sex <- as.character(crabs$sex)
-crabs$sex[crabs$sex=="M"]=0
-crabs$sex[crabs$sex=="F"]=1
-crabs$sex = as.numeric(crabs$sex)
-
-attach(crabs)
-
-##Setting
-y  <- BD
-x  <- cbind(1,FL,sex)
-
-#Finding the best model for the 3rd quartile based on Akaike criterion
-res = best.lqr(y, x, p = 0.75, criterion = "AIC")
+#Finding the best model for the 3rd quartile based on BIC
+best.lqr(BD~FL,data = crabs, p = 0.75, criterion = "BIC")
  }
 }

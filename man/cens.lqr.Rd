@@ -75,7 +75,7 @@ Maintainer: Christian E. Galarza <\email{chedgala@espol.edu.ec}>
 
 
 \examples{
-\dontrun{
+\donttest{
 ##Load the data
 data(ais)
 attach(ais)
@@ -88,7 +88,8 @@ cc = rep(0,length(y))
 LL = UL = rep(NA,length(y))
 
 #Generating a 5\% of interval-censored values
-ind = sample(x = c(0,1),size = length(y),replace = TRUE,prob = c(0.95,0.05))
+ind = sample(x = c(0,1),size = length(y),
+replace = TRUE,prob = c(0.95,0.05))
 ind1 = (ind == 1)
 
 cc[ind1] = 1
@@ -111,6 +112,8 @@ Galarza, C., Lachos, V. H. & Bourguignon M. (2021). A skew-t quantile regression
 
 Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust quantile regression using a generalized class of skewed distributions. Stat,
 6(1), 113-130.
+
+Wichitaksorn, N., Choy, S. B., & Gerlach, R. (2014). A generalized class of skew distributions and associated robust quantile regression models. Canadian Journal of Statistics, 42(4), 579-596.
 }
 
 \keyword{package}
@@ -119,5 +122,6 @@ Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust qua
 \keyword{skew}
 
 \seealso{\code{\link{lqr}},\code{\link{best.lqr}},\code{\link{Log.lqr}},
-\code{\link{Log.best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
-\code{\link[qrNLMM]{QRNLMM}}}
+\code{\link{Log.best.lqr}},\code{\link{dSKD}}%,\code{\link[qrLMM]{QRLMM}},
+%\code{\link[qrNLMM]{QRNLMM}}
+}

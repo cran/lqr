@@ -8,24 +8,33 @@ Robust Linear Quantile Regression
 It fits a robust linear quantile regression model using a new family of zero-quantile distributions for the error term. This family of distribution includes skewed versions of the Normal, Student's t, Laplace, Slash and Contaminated Normal distribution. It provides estimates and full inference. It also provides envelopes plots for assessing the fit and confidences bands when several quantiles are provided simultaneously.
 }
 \usage{
-lqr(y,x,p=0.5,dist="normal",nu="",gama="",precision=10^-6,envelope=FALSE,CI=0.95)
+lqr(formula,data = NULL,subset = NULL,
+               p=0.5,dist = "normal",
+               nu=NULL,gamma=NULL,
+               precision = 10^-6,envelope=FALSE,
+               CI=0.95,silent = FALSE
+)
 
-#lqr(y, x, p = 0.5, dist = "normal")
-#lqr(y, x, p = 0.5, dist = "t")
-#lqr(y, x, p = 0.5, dist = "laplace")
-#lqr(y, x, p = 0.5, dist = "slash")
-#lqr(y, x, p = 0.5, dist = "cont")
+#lqr(y~x, data, p = 0.5, dist = "normal")
+#lqr(y~x, data, p = 0.5, dist = "t")
+#lqr(y~x, data, p = 0.5, dist = "laplace")
+#lqr(y~x, data, p = 0.5, dist = "slash")
+#lqr(y~x, data, p = 0.5, dist = "cont")
 
-#lqr(y, x, p = c(0.25,0.50,0.75), dist = "normal")
+#lqr(y~x, p = c(0.25,0.50,0.75), dist = "normal")
 }
 
 \arguments{
-  \item{y}{
-the response vector of dimension \eqn{n} where \eqn{n} is the total of observations.
+\item{formula}{
+an object of class "formula" (or one that can be coerced to that class): a symbolic description of the model to be fitted.
 }
-\item{x}{
-design matrix for the fixed effects of dimension \eqn{N x d} where \eqn{d} represents the number of fixed effects including the intercept, if considered.
-}\item{p}{
+\item{data}{
+an optional data frame, list or environment (or object coercible by \code{as.data.frame} to a data frame) containing the variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}.
+}
+\item{subset}{
+an optional string specifying a subset of observations to be used in the fitting process. Be aware of the use of double quotes in a proper way when necessary, e.g., in \code{"(sex=='F')"}.
+}  
+\item{p}{
 An unique quantile or a set of quantiles related to the quantile regression.
 }
   \item{dist}{
@@ -34,7 +43,7 @@ represents the distribution to be used for the error term. The values are \code{
 \item{nu}{
 It represents the degrees of freedom when \code{dist = t}. For the Slash distribution (\code{dist = slash}) it is a shape parameter \eqn{\nu>0}. For the Contaminated Normal distribution, \eqn{\nu} is the parameter that represents the percentage of outliers. When is not provided, we use the MLE.
 }
-  \item{gama}{
+  \item{gamma}{
 It represents a scale factor for the contaminated normal distribution. When is not provided, we use the MLE.
 }
   \item{precision}{
@@ -47,6 +56,9 @@ If a grid of quantiles is provided it will be \code{FALSE} by default.
 }
   \item{CI}{
 Confidence to be used for the Confidence Interval when a grid of quantiles is provided. Default = 0.95.
+}
+  \item{silent}{
+if \code{FALSE} (by default), the function prints some output.
 }
 }
 \details{
@@ -78,100 +90,116 @@ If a grid of quantiles is provided, the result will be a list of the same dimens
 }
 
 \examples{
-\dontrun{
+\donttest{
 #Example 1
+
 ##Load the data
 data(ais)
 attach(ais)
 
-##Setting
-y<-BMI
-x<-cbind(1,LBM,Sex)
-
 ## Fitting a median regression with Normal errors (by default)
 
-modelF = lqr(y[Sex==1], x[Sex==1,1:2])
-modelM = lqr(y[Sex==0], x[Sex==0,1:2])
-plot(LBM,BMI,col=Sex+1,xlab="Lean Body Mass",ylab="Body4 Mass Index",main="Quantile Regression")
-abline(a = modelF$beta[1],b = modelF$beta[2],lwd=2,col=2)
-abline(a = modelM$beta[1],b = modelM$beta[2],lwd=2,col=4)
+modelF = lqr(BMI~LBM,data = ais,subset = "(Sex==1)")
+modelM = lqr(BMI~LBM,data = ais,subset = "(Sex==0)")
+
+plot(LBM,BMI,col=Sex*2+1,
+     xlab="Lean Body Mass",
+     ylab="Body4 Mass Index",
+     main="Quantile Regression")
+
+abline(a = modelF$beta[1],b = modelF$beta[2],lwd=2,col=3)
+abline(a = modelM$beta[1],b = modelM$beta[2],lwd=2,col=1)
+legend(x = "topleft",legend = c("Male","Female"),lwd = 2,col = c(1,3))
 
 #COMPARING SOME MODELS for median regression
-x<-cbind(1,LBM)
+modelN  = lqr(BMI~LBM,dist = "normal")
+modelT  = lqr(BMI~LBM,dist = "t")
+modelL  = lqr(BMI~LBM,dist = "laplace")
 
-modelN  = lqr(y,x,dist = "normal")
-modelT  = lqr(y,x,dist = "t")
-modelL  = lqr(y,x,dist = "laplace")
-
-#Comparing AIC criterias
+#Comparing AIC criteria
 modelN$AIC;modelT$AIC;modelL$AIC
 
 #This could be automatically done using best.lqr()
-best.model = best.lqr(y, x, p = 0.75, criterion = "AIC")
+best.model = best.lqr(BMI~LBM,data = ais,
+                      p = 0.75, #third quartile
+                      criterion = "AIC")
 
-#Let's use a grid of quantiles
-modelfull = lqr(y,x,p = seq(from = 0.10,to = 0.90,by = 0.05),dist = "normal")
+#Let's use a grid of quantiles (no output)
+modelfull = lqr(BMI~LBM,data = ais,
+                p = seq(from = 0.10,to = 0.90,by = 0.05),
+                dist = "normal",silent = TRUE)
 
 #Plotting quantiles 0.10,0.25,0.50,0.75 and 0.90
 
-plot(LBM,BMI,xlab = "Lean Body Mass"
-     ,ylab = "Body Mass Index", main = "Quantile Regression",pch=16)
-abline(a = modelfull[[1]]$beta[1],b = modelfull[[1]]$beta[2],lwd=2,lty=1,col=2)
-abline(a = modelfull[[17]]$beta[1],b = modelfull[[17]]$beta[2],lwd=2,lty=1,col=2)
-abline(a = modelfull[[4]]$beta[1],b = modelfull[[4]]$beta[2],lwd=2,lty=1,col=3)
-abline(a = modelfull[[14]]$beta[1],b = modelfull[[14]]$beta[2],lwd=2,lty=1,col=3)
-abline(a = modelfull[[9]]$beta[1],b = modelfull[[9]]$beta[2],lwd=2,lty=1,col=4)
-
+if(TRUE){
+  plot(LBM,BMI,xlab = "Lean Body Mass"
+       ,ylab = "Body Mass Index", main = "Quantile Regression",pch=16)
+  
+  colvec = c(2,2,3,3,4)
+  imodel = c(1,17,4,14,9)
+  for(i in 1:5){
+    abline(a = modelfull[[imodel[i]]]$beta[1],
+           b = modelfull[[imodel[i]]]$beta[2],
+           lwd=2,col=colvec[i])  
+  }
+  legend(x = "topleft",
+         legend = rev(c("0.10","0.25","0.50","0.75","0.90")),
+         lwd = 2,col = c(2,3,4,3,2))
+}
 
 #Example 2
 ##Load the data
 
 data(crabs,package = "MASS")
-
-crabs$sex <- as.character(crabs$sex)
-crabs$sex[crabs$sex=="M"]=0
-crabs$sex[crabs$sex=="F"]=1
-crabs$sex = as.numeric(crabs$sex)
-
 attach(crabs)
-head(crabs)
 
-##Setting
-y  <- BD
-x  <- cbind(1,FL,sex)
-plot(crabs)
+## Fitting a median regression with Normal errors (by default) #Note the double quotes
+crabsF = lqr(BD~FL,data = crabs,subset = "(sex=='F')")
+crabsM = lqr(BD~FL,data = crabs,subset = "(sex=='M')")
 
-## Fitting a median regression with Normal errors (by default)
-modelF = lqr(y[sex==1], x[sex==1,1:2])
-modelM = lqr(y[sex==0], x[sex==0,1:2])
-plot(FL,BD,col=sex+1,xlab="Frontal lobe size",ylab="Body depth",main="Quantile Regression")
-abline(a = modelF$beta[1],b = modelF$beta[2],lwd=2,col=2)
-abline(a = modelM$beta[1],b = modelM$beta[2],lwd=2,col=4)
+if(TRUE){
+  plot(FL,BD,col=as.numeric(sex)+1,
+       xlab="Frontal lobe size",ylab="Body depth",main="Quantile Regression")
+  abline(a = crabsF$beta[1],b = crabsF$beta[2],lwd=2,col=2)
+  abline(a = crabsM$beta[1],b = crabsM$beta[2],lwd=2,col=3)
+  legend(x = "topleft",legend = c("Male","Female"),
+         lwd = 2,col = c(3,2))
+}
 
-#COMPARING SOME MODELS for median regression
-x<-cbind(1,FL)
+#Median regression for different distributions
 
-modelN  = lqr(y,x,dist = "normal")
-modelT  = lqr(y,x,dist = "t")
-modelL  = lqr(y,x,dist = "laplace")
-modelS  = lqr(y,x,dist = "slash")
-modelC  = lqr(y,x,dist = "cont" )
+modelN  = lqr(BD~FL,dist = "normal")
+modelT  = lqr(BD~FL,dist = "t")
+modelL  = lqr(BD~FL,dist = "laplace")
+modelS  = lqr(BD~FL,dist = "slash")
+modelC  = lqr(BD~FL,dist = "cont" )
 
 #Comparing AIC criterias
 modelN$AIC;modelT$AIC;modelL$AIC;modelS$AIC;modelC$AIC
 
-#Let's use a grid of quantiles
-modelfull = lqr(y,x,p = seq(from = 0.10,to = 0.90,by = 0.05),dist = "t")
+# best model based on BIC
+best.lqr(BD~FL,criterion = "BIC")
+
+#Let's use a grid of quantiles for the Student's t distribution
+modelfull = lqr(BD~FL,data = crabs,
+                p = seq(from = 0.10,to = 0.90,by = 0.05),
+                dist = "t") # silent = FALSE
 
 #Plotting quantiles 0.10,0.25,0.50,0.75 and 0.90
-
-plot(FL,BD,xlab = "Frontal lobe size"
-     ,ylab = "Body depth", main = "Quantile Regression",pch=16)
-abline(a = modelfull[[1]]$beta[1],b = modelfull[[1]]$beta[2],lwd=2,lty=1,col=2)
-abline(a = modelfull[[17]]$beta[1],b = modelfull[[17]]$beta[2],lwd=2,lty=1,col=2)
-abline(a = modelfull[[4]]$beta[1],b = modelfull[[4]]$beta[2],lwd=2,lty=1,col=3)
-abline(a = modelfull[[14]]$beta[1],b = modelfull[[14]]$beta[2],lwd=2,lty=1,col=3)
-abline(a = modelfull[[9]]$beta[1],b = modelfull[[9]]$beta[2],lwd=2,lty=1,col=4)
+if(TRUE){
+  plot(FL,BD,xlab = "Frontal lobe size"
+       ,ylab = "Body depth", main = "Quantile Regression",pch=16)
+  colvec = c(2,2,3,3,4)
+  imodel = c(1,17,4,14,9)
+  for(i in 1:5){
+    abline(a = modelfull[[imodel[i]]]$beta[1],
+           b = modelfull[[imodel[i]]]$beta[2],
+           lwd=2,col=colvec[i])  
+  }
+  legend(x = "topleft",
+         legend = rev(c("0.10","0.25","0.50","0.75","0.90")),
+         lwd = 2,col = c(2,3,4,3,2))
+}
 }
 }
 
@@ -188,5 +216,6 @@ Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew
 \keyword{skew}
 
 \seealso{\code{\link{cens.lqr}},\code{\link{best.lqr}},\code{\link{Log.lqr}},
-\code{\link{Log.best.lqr}},\code{\link{dSKD}},\code{\link[qrLMM]{QRLMM}},
-\code{\link[qrNLMM]{QRNLMM}}}
+\code{\link{Log.best.lqr}},\code{\link{dSKD}}%,\code{\link[qrLMM]{QRLMM}},
+%\code{\link[qrNLMM]{QRNLMM}}
+}

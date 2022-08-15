@@ -2,13 +2,13 @@
 # (d,p,q and r functions)
 ##########################################################################################
 
-dSKD = function(y,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
+dSKD = function(y,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gamma="")
 {
   if(any(y==Inf)) stop("y must be a finite real number.")
   if(sigma <= 0) stop("sigma must be a positive number.")
   if(p >= 1 | p <= 0) stop("p must be a real number in (0,1).")
   if(abs(mu) ==Inf) stop("mu must be a finite real number.")
-  if(gama != "" && (gama >= 1 | gama <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
+  if(gamma != "" && (gamma >= 1 | gamma <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   if(nu != "" && (nu >= 1 | nu <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   #if(nu != "" && (nu >= 100 | nu < 2) && dist == "t") stop("nu must be a positive real number at least 2.")
   if(nu != "" && (nu < 2) && dist == "t") stop("nu must be a positive real number at least 2.")
@@ -20,26 +20,26 @@ dSKD = function(y,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
   if(nu=="" && dist == "t"){nu=4}
   if(nu=="" && dist == "slash"){nu=2}
   if(nu=="" && dist == "cont"){nu=0.1}
-  if(gama=="" && dist == "cont"){gama=0.1}
+  if(gamma=="" && dist == "cont"){gamma=0.1}
   
   if(dist == "normal"){return(densN(y,mu = mu,sigma = sigma,p = p))}
   if(dist == "t"){return(densT(x = y,mu = mu,sigma = sigma,nu = nu,p = p))}
   if(dist == "laplace"){return(densL(y,mu = mu,sigma = sigma,p = p))}
   if(dist == "slash"){return(densSl(y,mu = mu,sigma = sigma,nu = nu,p = p))}
-  if(dist == "cont"){return(densNC(y,mu = mu,sigma = sigma,nu = nu,gama = gama,p = p))}
+  if(dist == "cont"){return(densNC(y,mu = mu,sigma = sigma,nu = nu,gamma = gamma,p = p))}
 }
 
 # seqq = seq(from=-20,to = 10,length.out = 1000)
 # vals = dSKD(x=seqq,mu=0,sigma=1,p=0.85,dist="laplace")
 # plot(seqq,vals,type="l")
 
-pSKD = function(q,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail=TRUE)
+pSKD = function(q,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gamma="",lower.tail=TRUE)
 {
   #if(any(q==Inf)) stop("q must be a finite real number.")
   if(sigma <= 0) stop("sigma must be a positive number.")
   if(p >= 1 | p <= 0) stop("p must be a real number in (0,1).")
   if(abs(mu) ==Inf) stop("mu must be a finite real number.")
-  if(gama != "" && (gama >= 1 | gama <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
+  if(gamma != "" && (gamma >= 1 | gamma <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   if(nu != "" && (nu >= 1 | nu <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   if(nu != "" && (nu >= 100 | nu < 2) && dist == "t") stop("nu must be a positive real number at least 2.")
   if(nu != "" && nu <= 0 && dist == "slash") stop("nu must be a positive real number.")
@@ -51,7 +51,7 @@ pSKD = function(q,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail=TR
   if(nu=="" && dist == "t"){nu=4}
   if(nu=="" && dist == "slash"){nu=2}
   if(nu=="" && dist == "cont"){nu=0.1}
-  if(gama=="" && dist == "cont"){gama=0.1}
+  if(gamma=="" && dist == "cont"){gamma=0.1}
   
   #if(dist == "normal"){out = integrate(f = densN,lower = -Inf,upper = x,mu = mu,sigma = sigma,p = p)$value}
   if(dist == "normal"){
@@ -96,7 +96,7 @@ pSKD = function(q,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail=TR
                                      sigma = sigma,
                                      p = p,
                                      nu=nu,
-                                     gama=gama))[1,])
+                                     gamma=gamma))[1,])
     out[out < 0] = 0
     out[out > 1] = 1
   }
@@ -111,13 +111,13 @@ pSKD = function(q,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail=TR
 # plot(seqq,vals,type="l")
 
 
-qSKD = function(prob,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail=TRUE)
+qSKD = function(prob,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gamma="",lower.tail=TRUE)
 {
   if(any(prob > 1) | any(prob < 0)) stop("prob must be a real number in (0,1).")
   if(sigma <= 0) stop("sigma must be a positive number.")
   if(p > 1 | p < 0) stop("p must be a real number in [0,1].")
   if(abs(mu) ==Inf) stop("mu must be a finite real number.")
-  if(gama != "" && (gama >= 1 | gama <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
+  if(gamma != "" && (gamma >= 1 | gamma <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   if(nu != "" && (nu >= 1 | nu <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   if(nu != "" && (nu >= 100 | nu < 2) && dist == "t") stop("nu must be a positive real number at least 2.")
   if(nu != "" && nu <= 0 && dist == "slash") stop("nu must be a positive real number.")
@@ -129,13 +129,13 @@ qSKD = function(prob,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail
   if(nu=="" && dist == "t"){nu=4}
   if(nu=="" && dist == "slash"){nu=2}
   if(nu=="" && dist == "cont"){nu=0.1}
-  if(gama=="" && dist == "cont"){gama=0.1}
+  if(gamma=="" && dist == "cont"){gamma=0.1}
   if(lower.tail == FALSE){prob = 1 - prob}
   
   mu0 = mu
   mu  = 0
   
-  f <- function(x) pSKD(x,mu=mu,sigma=sigma,p=p,dist = dist,nu = nu,gama = gama)
+  f <- function(x) pSKD(x,mu=mu,sigma=sigma,p=p,dist = dist,nu = nu,gamma = gamma)
   f.inv <- inverse(f,lower=-Inf,upper=Inf)
   
   kind  = rep(NA,length(prob)) 
@@ -163,23 +163,23 @@ qSKD = function(prob,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="",lower.tail
 # plot(seqq,idf,type="l")
 
 
-rSKD = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gama="")
+rSKD = function(n,mu=0,sigma=1,p=0.5,dist = "normal",nu="",gamma="")
 {
   if(length(n) == 0) stop("The sample size n must be provided.")
   if(n <= 0 || n%%1 !=0) stop("The sample size n must be a positive integer value.")
   if(sigma <= 0) stop("sigma must be a positive number.")
   if(p >= 1 | p <= 0) stop("p must be a real number in (0,1).")
   if(abs(mu) ==Inf) stop("mu must be a finite real number.")
-  if(gama != "" && (gama >= 1 | gama <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
+  if(gamma != "" && (gamma >= 1 | gamma <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   if(nu != "" && (nu >= 1 | nu <= 0) && dist == "cont") stop("nu must be a real number in (0,1)")
   if(nu != "" && (nu >= 100 | nu < 2) && dist == "t") stop("nu must be a positive real number at least 2.")
   if(nu != "" && nu <= 0 && dist == "slash") stop("nu must be a positive real number.")
   if(dist != "" && dist != "normal" && dist != "t" && dist != "laplace" && dist != "slash" && dist != "cont") stop("The dist values are normal, t, laplace, slash or cont.")
   
-  return(genSLK(n,mu,sigma,p,dist,nu,gama))
+  return(genSLK(n,mu,sigma,p,dist,nu,gamma))
 }
 
-# x = rSKD(n=100000,mu=0,sigma=2,p=0.2,dist="cont",gama=0.3)
+# x = rSKD(n=100000,mu=0,sigma=2,p=0.2,dist="cont",gamma=0.3)
 # hist(x,breaks = 100)
 
 

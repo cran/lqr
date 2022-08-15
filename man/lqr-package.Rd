@@ -43,6 +43,7 @@ Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust qua
 
 \seealso{\code{\link{SKD}},\code{\link{Log.best.lqr}},
 \code{\link{Log.lqr}},\code{\link{best.lqr}},\code{\link{lqr}},
-\code{\link{ais}},
-\code{\link[qrLMM]{QRLMM}},
-\code{\link[qrNLMM]{QRNLMM}}}
+\code{\link{ais}}%,
+%\code{\link[qrLMM]{QRLMM}},
+%\code{\link[qrNLMM]{QRNLMM}}
+}
