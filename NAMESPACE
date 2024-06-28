@@ -1,5 +1,5 @@
 export(cens.lqr,Log.lqr,Log.best.lqr,lqr,best.lqr,dtrunc,dSKD,ptrunc,pSKD,qtrunc,qSKD,rtrunc,rSKD,extrunc,vartrunc,Egig)
-importFrom(spatstat.geom,ewcdf)
+importFrom(spatstat.univar,ewcdf)
 importFrom(numDeriv,grad)
 importFrom(graphics, abline, axis, lines, par, plot,
              points, polygon, title, hist, plot.new)
@@ -7,8 +7,7 @@ importFrom(stats, dbeta, dnorm, optim, optimize, pgamma,
              pnorm, ppoints, qexp, qnorm, qt, quantile,
              rbeta, rexp, rgamma, rnorm, rt, runif,
              smooth.spline, residuals, integrate,
-             uniroot,median,formula)
+             uniroot,median,formula,model.frame,model.matrix,model.response)
 importFrom(MomTrunc,pmvnormt,onlymeanTMD,meanvarTMD)
 importFrom(quantreg,rq)
 import(MASS)
-importFrom("stats", "model.frame", "model.matrix", "model.response")

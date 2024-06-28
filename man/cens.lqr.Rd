@@ -67,7 +67,7 @@ Combinations of all cases above are permitted, that is, we may have left-censore
 \item{imputed.values}{vector containing the imputed values for censored/missing observations.}
 \item{residuals}{vector containing the residuals.}
 }
-\author{Christian E. Galarza <\email{chedgala@espol.edu.ec}>, {Marcelo Bourguignon} <\email{m.p.bourguignon@gmail.com}> and
+\author{Christian E. Galarza <\email{chedgala@espol.edu.ec}>, Marcelo Bourguignon <\email{m.p.bourguignon@gmail.com}> and
 Victor H. Lachos <\email{hlachos@ime.unicamp.br}>
 
 Maintainer: Christian E. Galarza <\email{chedgala@espol.edu.ec}>

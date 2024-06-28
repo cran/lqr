@@ -73,14 +73,14 @@ Galarza, C., Lachos, V. H., Cabral, C. R. B., & Castro, C. L. (2017). Robust qua
 Wichitaksorn, N., Choy, S. T., & Gerlach, R. (2014). A generalized class of skew distributions and associated robust quantile regression models. Canadian Journal of Statistics, 42(4), 579-596.
 }
 
-\author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, {Luis Benites} <\email{lsanchez@ime.usp.br}> and
+\author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, Luis Benites <\email{lsanchez@ime.usp.br}> and
 Victor H. Lachos <\email{hlachos@ime.unicamp.br}>
 
 Maintainer: Christian E. Galarza <\email{cgalarza88@gmail.com}>
 }
 
 \note{
-The numerical arguments other than \code{n} are recycled to the length of the result.
+The numerical arguments other than \code{n} are recycled to the length of the result. 
 }
 
 \seealso{

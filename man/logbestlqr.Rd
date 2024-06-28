@@ -83,7 +83,7 @@ For the best model:
 \item{residuals}{vector containing the residuals.}
 }
 
-\author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, {Luis Benites} <\email{lsanchez@ime.usp.br}> and
+\author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, Luis Benites <\email{lsanchez@ime.usp.br}> and
 Victor H. Lachos <\email{hlachos@ime.unicamp.br}>
 
 Maintainer: Christian E. Galarza <\email{cgalarza88@gmail.com}>
