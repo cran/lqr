@@ -1,4 +1,4 @@
-c7e32d81e14619c754ac43e1dd5f3ae1 *DESCRIPTION
+d8ec78707c02e6f5e4f92984de89152c *DESCRIPTION
 0ab05927ac454f1d9d587417d6bc7ea2 *NAMESPACE
 c1a0d831293686356213fee226e0cf45 *R/EM2.R
 8e3ab78381a2042ab1f6b4c7bc77e504 *R/EMonly.R
@@ -24,6 +24,6 @@ cd95b052366b0b3d6a5f8df92da46a40 *man/cens.lqr.Rd
 ed89a4e6cdb207adc048889996cffb81 *man/dist.Truncated.Rd
 60bf3d6438297a1709584babec168f49 *man/logbestlqr.Rd
 aa0e26410ce7b20723ea45765f2944e1 *man/loglqr.Rd
-76eb5656373cdb43c55bfcb3d155ce99 *man/lqr-package.Rd
+f8cdb46e5442cad702b9a780f322ffa9 *man/lqr-package.Rd
 666bc211745c7fe5affed88b3a06ea56 *man/lqr.Rd
 b34c0c79a529a204e5203f27a421c656 *man/resistance.Rd

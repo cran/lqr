@@ -8,17 +8,8 @@ Robust Linear Quantile Regression
 \description{
 It fits a robust linear quantile regression model using a new family of zero-quantile distributions for the error term. This family of distribution includes skewed versions of the Normal, Student's t, Laplace, Slash and Contaminated Normal distribution. It provides estimates and full inference. It also provides envelopes plots for assessing the fit and confidences bands when several quantiles are provided simultaneously. Details of its first version can be found below.
 }
-\details{
-\tabular{ll}{
-Package: \tab lqr\cr
-Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2015-10-29\cr
-License: \tab GPL (>=2)\cr
-}
 
 
-}
 \author{Christian E. Galarza <\email{cgalarza88@gmail.com}>, Luis Benites <\email{lsanchez@ime.usp.br}> and 
 Victor H. Lachos <\email{hlachos@ime.unicamp.br}>
 
